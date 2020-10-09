@@ -1,0 +1,6 @@
+minirt
+libmlx.dylib
+*.o
+*.swiftdoc
+*.swiftmodule
+*.swp

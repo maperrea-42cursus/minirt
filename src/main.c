@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/08 22:44:51 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/09 22:23:35 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ int		main()
 		return (0);
 	img.image = mlx_new_image(mlx_ptr, 300, 300);
 	img.image_data = mlx_get_data_addr(img.image, &img.bpp, &img.size_line, &img.endian);
+	img.ppl = img.size_line / (img.bpp / 8);
 	for (int x = 0; x < 300; x++)
 		for (int y = 0; y < 300; y++)
-			((int *)img.image_data)[x * (img.size_line / (img.bpp / 8)) + y] = 0x00ff00ff;
+			((int *)img.image_data)[x * img.ppl + y] = 0x00ff00ff;
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img.image, 100, 100);
 	mlx_loop(mlx_ptr);
 }
