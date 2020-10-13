@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/09 20:19:56 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/13 21:18:00 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <math.h>
 # include "mlx.h"
-
-# define WINW 1920
-# define WINH 1080
+# include "libft.h"
 
 typedef struct			s_mlx_image
 {
@@ -65,6 +65,12 @@ typedef struct			s_camera
 	double				fov;
 }						t_camera;
 
+typedef struct			s_cameras
+{
+	void				*cameras;
+	struct s_cameras	*next;
+}						t_cameras;
+
 typedef t_fvec3			(t_get_intersection)(t_fvec3 orig, t_fvec3 dir,
 															void *object);
 typedef struct			s_sphere
@@ -78,7 +84,7 @@ typedef struct			s_sphere
 typedef struct			s_objects
 {
 	void				*object;
-	struct t_object		*next;
+	struct s_objects	*next;
 }						t_objects;
 
 typedef double			(t_get_luminosity)(t_fvec3 pos, void* light); 
@@ -94,10 +100,21 @@ typedef struct			s_light
 typedef struct			s_lights
 {
 	void				*light;
-	struct t_lights		*next;
+	struct s_lights		*next;
 }						t_lights;
 
-t_objects				g_objects;
-t_lights				g_lights;
+t_objects				*g_objects;
+t_lights				*g_lights;
+t_camera				*cameras
+t_vec3					resolution;
+t_light					ambient_lightning;
+
+int						parse_map(char *filename);
+
+t_fvec3					fvec3_div(t_fvec3 vec, double div);
+double					fvec3_length(t_fvec3 vec);
+t_fvec3					fvec3_normalize(t_fvec3 vec);
+t_fvec3					fvec3_product(t_fvec3 a, t_fvec3 b);
+//t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 #endif

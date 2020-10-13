@@ -6,18 +6,22 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/09 22:37:24 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/13 21:17:58 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		main()
+int		main(int argc, char **argv)
 {
 	void			*mlx_ptr;
 	void			*win_ptr;
 	t_mlx_image		img;
 
+	if (argc < 2)
+		write(1, "Error\nNo input\n", 15);
+	else
+		parse_map(argv[1]);
 	if (!(mlx_ptr = mlx_init()))
 		return (0);
 	if (!(win_ptr = mlx_new_window(mlx_ptr, WINW, WINH, "oui")))
@@ -30,5 +34,6 @@ int		main()
 			((int *)img.image_data)[x * img.ppl + y] = 0x00ff00ff;
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img.image, 100, 100);
 	mlx_loop(mlx_ptr);
+	free_list();
 	return (0);
 }

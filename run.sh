@@ -1,1 +1,1 @@
-make && ./minirt
+make && ./minirt $1 $2
