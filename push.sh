@@ -1,7 +1,7 @@
 #!/bin/zsh
 git add -A
-ret= git diff --cached --exit-code >/dev/null
-if [ $ret = 0 ]; then
+git diff --cached --exit-code >/dev/null
+if [[ $? -eq 0 ]]; then
 	echo "No changes to be commited"
 	exit
 fi
