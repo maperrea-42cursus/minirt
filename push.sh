@@ -1,17 +1,16 @@
 #!/bin/zsh
 git add -A
-if [[ $1 == "-fast" ]]; then
-	git status -s
-	git commit -m "default fast commit message"
-	git push github master
-	exit
-fi
 git diff --cached --exit-code >/dev/null
 if [[ $? -eq 0 ]]; then
 	echo "No changes to be commited"
 	exit
 fi
 git status -s
+if [[ $1 == "-fast" ]]; then
+	git commit -m "default fast commit message"
+	git push github master
+	exit
+fi
 while true; do
 	echo -n "do you wish to push? [y/n]: "
 	read yn
@@ -20,7 +19,15 @@ while true; do
 			echo -n "enter commit message: "
 			read message
 			git commit -m "$message"
-			git push github master
+			git push abc master
+			if [[ $? -ne 0 ]]; then
+				while true; do
+					echo -n "Please enter a correct repository and branch: "
+					read repo
+					git push "$repo"
+					exit
+				done
+			fi
 			exit;;
 		N | n )
 			exit;;
