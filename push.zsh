@@ -8,7 +8,7 @@ fi
 git status -s
 if [[ $1 == "-fast" ]]; then
 	git commit -m "Default fast commit message"
-	git push
+	git push $2 $3
 	exit
 fi
 while true; do
