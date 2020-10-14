@@ -19,7 +19,7 @@ while true; do
 			echo -n "Please enter a commit message: "
 			read message
 			git commit -m "$message"
-			git push
+			git push $1 $2
 			if [[ $? -ne 0 ]]; then
 				while true; do
 					echo -n "Please enter a correct repository and branch: "
