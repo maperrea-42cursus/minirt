@@ -7,25 +7,24 @@ if [[ $? -eq 0 ]]; then
 fi
 git status -s
 if [[ $1 == "-fast" ]]; then
-	git commit -m "default fast commit message"
-	git push github master
+	git commit -m "Default fast commit message"
+	git push
 	exit
 fi
 while true; do
-	echo -n "do you wish to push? [y/n]: "
+	echo -n "Do you wish to push? [y/n]: "
 	read yn
 	case $yn in
 		Y | y )
-			echo -n "enter commit message: "
+			echo -n "Please enter a commit message: "
 			read message
 			git commit -m "$message"
-			git push abc master
+			git push abc
 			if [[ $? -ne 0 ]]; then
 				while true; do
 					echo -n "Please enter a correct repository and branch: "
 					read repo
-					echo $repo
-					git push $repo
+					git push ${=repo}
 					exit
 				done
 			fi
