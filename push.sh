@@ -9,7 +9,7 @@ while true; do
 			read message
 			git commit -m "$message"
 			git push github master
-			;;
+			exit;;
 		N | n ) exit;;
 	esac
 done
