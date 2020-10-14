@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/13 20:24:10 by maperrea         ###   ########.fr        #
+#    Updated: 2020/10/14 18:35:21 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,11 +34,15 @@ LIBFT			= libft.a
 
 LIBDIR			= libft
 
+GNL				= gnl.a
+
+GNLDIR			= gnl
+
 CC				= gcc
 
 RM				= rm -f
 
-CFLAGS			= -Wall -Werror -Wextra
+#CFLAGS			= -Wall -Werror -Wextra
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 				@$(CC) -O3 $(CFLAGS) -I$(INCDIR) -c $^ -o $@
@@ -52,16 +56,20 @@ $(MLX):
 $(LIBDIR)/$(LIBFT):
 				make -C $(LIBDIR)
 
+$(GNLDIR)/$(GNL):
+				make -C $(GNLDIR)
+
 $(OBJDIR):
 				@mkdir -p $(OBJDIR)
 
-$(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(OBJDIR) $(OBJS)
-				$(CC) -O3 $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) $(LIBDIR)/$(LIBFT) -o $(NAME)
+$(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) $(OBJDIR) $(OBJS)
+				$(CC) -O3 $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) \
+						$(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) -o $(NAME)
 
 clean:
 				$(RM) -r $(OBJDIR)
 
-fclean:
+fclean:			clean
 				$(RM) $(NAME)
 
 re:				fclean $(NAME)

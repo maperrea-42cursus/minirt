@@ -6,7 +6,7 @@
 #    By: maperrea <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/07 10:56:01 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/06 21:25:48 by maperrea         ###   ########.fr        #
+#    Updated: 2020/10/14 19:40:51 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS		=	ft_atoi.c					\
 				ft_isascii.c				\
 				ft_isdigit.c				\
 				ft_isprint.c				\
+				ft_isspace.c				\
 				ft_itoa.c					\
 				ft_itoa_base.c				\
 				ft_lstadd_back.c			\

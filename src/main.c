@@ -6,11 +6,14 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/13 21:17:58 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:56:54 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+# define WINW 1920
+# define WINH 1080
 
 int		main(int argc, char **argv)
 {

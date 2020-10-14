@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:08:32 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:46:12 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:37:56 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int				ft_isdigit(int c);
 int				ft_isalnum(int c);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
+int				ft_isspace(char c);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
 

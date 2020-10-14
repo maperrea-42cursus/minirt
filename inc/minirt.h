@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/13 21:18:00 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:56:53 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,34 @@
 # include <math.h>
 # include "mlx.h"
 # include "libft.h"
+# include "get_next_line.h"
+
+typedef enum			e_parse_type
+{
+	INVALID = -2,
+	NONE = -1,
+	RESOLUTION,
+	AMBIENT_LIGHT,
+	CAMERA,
+	LIGHT,
+	SPHERE,
+	PLANE,
+	SQUARE,
+	CYLINDER,
+	TRIANGLE,
+	TYPE_COUNT
+}						t_parse_type;
+
+typedef int				(t_parse)(char *line);
 
 typedef struct			s_mlx_image
 {
-	void		*image;
-	char		*image_data;
-	int			bpp;
-	int			ppl;
-	int			size_line;
-	int			endian;
+	void				*image;
+	char				*image_data;
+	int					bpp;
+	int					ppl;
+	int					size_line;
+	int					endian;
 }						t_mlx_image;
 
 typedef struct			s_vec2
@@ -105,9 +124,9 @@ typedef struct			s_lights
 
 t_objects				*g_objects;
 t_lights				*g_lights;
-t_camera				*cameras
-t_vec3					resolution;
-t_light					ambient_lightning;
+t_camera				*g_cameras;
+t_vec3					g_resolution;
+t_light					g_ambient_light;
 
 int						parse_map(char *filename);
 
