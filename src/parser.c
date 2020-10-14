@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 19:56:51 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/14 22:34:46 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,32 @@ void	add_object(void *object)
 
 int		parse_r(char *line)
 {
-	printf("%s\n", line);
+	static char done;
+
+	if (done)
+		return (0);									//TODO error message
+	while(!ft_isdigit(*line))
+		line++;
+	g_resolution.x = ft_atoi(line);
+	while(ft_isdigit(*line))
+		line++;
+	while(!ft_isdigit(*line))
+		line++;
+	g_resolution.y = ft_atoi(line);
+	printf("resolution: %dx%d\n", g_resolution.x, g_resolution.y);
+	done = 1;
 	return (1);
 }
 
 int		parse_a(char *line)
 {
+	static char done;
+
+	if (done)
+		return (0);									//TODO error message
 	printf("%s\n", line);
+
+	done = 1;
 	return (1);
 }
 
@@ -53,36 +72,41 @@ int		parse_c(char *line)
 	return (1);
 }
 
+int		parse_l(char *line)
+{
+	printf("%s\n", line);
+	return (1);
+}
+
 int		parse_sp(char *line)
 {
 	printf("%s\n", line);
 	return (1);
 }
 
-/*
-char	*read_map(char *filename)
+int		parse_pl(char *line)
 {
-	int 	fd;
-	int		ret;
-	char	*file;
-	char	buf[257];
-
-	if (!(fd = open(filename, O_RDONLY)))
-	{
-			perror(NULL);
-			return (NULL);
-	}
-	file = "";
-	ret = 256;
-	while (ret == 256)
-	{
-		ret = read(fd, buf, 256);
-		buf[ret] = 0;
-		file = ft_strjoin(file, buf);
-	}
-	return (file);
+	printf("%s\n", line);
+	return (1);
 }
-*/
+
+int		parse_sq(char *line)
+{
+	printf("%s\n", line);
+	return (1);
+}
+
+int		parse_cy(char *line)
+{
+	printf("%s\n", line);
+	return (1);
+}
+
+int		parse_tr(char *line)
+{
+	printf("%s\n", line);
+	return (1);
+}
 
 t_parse	**init_dispatch_table(void)
 {
@@ -93,12 +117,12 @@ t_parse	**init_dispatch_table(void)
 	table[RESOLUTION] = &parse_r;
 	table[AMBIENT_LIGHT] = &parse_a;
 	table[CAMERA] = &parse_c;
-//	table[LIGHT] = &parse_l;
+	table[LIGHT] = &parse_l;
 	table[SPHERE] = &parse_sp;
-/*	table[PLANE] = &parse_pl;
+	table[PLANE] = &parse_pl;
 	table[SQUARE] = &parse_sq;
 	table[CYLINDER] = &parse_cy;
-	table[TRIANGLE] = &parse_tr; */
+	table[TRIANGLE] = &parse_tr;
 	return (table);
 }
 
@@ -157,7 +181,10 @@ int		parse_map(char *filename)
 		type = get_parse_type(line);
 		if (type != NONE)
 			if (!(*(dispatch_table[type]))(line))
+			{
+				write(1, "ERROR\n", 6);						//TODO remove
 				return (0);
+			}
 	}
 	return (1);
 }

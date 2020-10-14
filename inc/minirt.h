@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 19:56:53 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/14 22:27:39 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct			s_lights
 t_objects				*g_objects;
 t_lights				*g_lights;
 t_camera				*g_cameras;
-t_vec3					g_resolution;
+t_vec2					g_resolution;
 t_light					g_ambient_light;
 
 int						parse_map(char *filename);
