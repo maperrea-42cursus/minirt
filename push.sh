@@ -1,13 +1,15 @@
 #!/bin/zsh
 git add -A
 git status -s
-echo -n "do you wish to push? [y/n]:"
-read yn
-case $yn in
-	y ) echo -n "enter commit message:"
-		read message
-		git commit -m "$message"
-		git push github master
-		;;
-	n ) exit;;
-esac
+while true; do
+	echo -n "do you wish to push? [y/n]: "
+	read yn
+	case $yn in
+		Y | y ) echo -n "enter commit message: "
+			read message
+			git commit -m "$message"
+			git push github master
+			;;
+		N | n ) exit;;
+	esac
+done
