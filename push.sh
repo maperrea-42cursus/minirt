@@ -1,3 +1,4 @@
+#!/bin/zsh
 git add -A
 git status -s
 echo -n "do you wish to push? [y/n]:"
