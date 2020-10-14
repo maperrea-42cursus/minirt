@@ -24,6 +24,7 @@ while true; do
 				while true; do
 					echo -n "Please enter a correct repository and branch: "
 					read repo
+					echo $repo
 					git push $repo
 					exit
 				done
