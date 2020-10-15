@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 22:27:39 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/15 06:52:13 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,13 @@
 # include "libft.h"
 # include "get_next_line.h"
 
-typedef enum			e_parse_type
-{
-	INVALID = -2,
-	NONE = -1,
-	RESOLUTION,
-	AMBIENT_LIGHT,
-	CAMERA,
-	LIGHT,
-	SPHERE,
-	PLANE,
-	SQUARE,
-	CYLINDER,
-	TRIANGLE,
-	TYPE_COUNT
-}						t_parse_type;
-
 typedef int				(t_parse)(char *line);
+
+typedef struct			s_lookup_table
+{
+	char				*key;
+	t_parse				*value;
+}						t_lookup_table;
 
 typedef struct			s_mlx_image
 {
@@ -86,7 +76,7 @@ typedef struct			s_camera
 
 typedef struct			s_cameras
 {
-	void				*cameras;
+	void				*camera;
 	struct s_cameras	*next;
 }						t_cameras;
 
@@ -124,7 +114,7 @@ typedef struct			s_lights
 
 t_objects				*g_objects;
 t_lights				*g_lights;
-t_camera				*g_cameras;
+t_cameras				*g_cameras;
 t_vec2					g_resolution;
 t_light					g_ambient_light;
 

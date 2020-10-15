@@ -6,14 +6,11 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 19:56:54 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/15 06:08:31 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-# define WINW 1920
-# define WINH 1080
 
 int		main(int argc, char **argv)
 {
@@ -22,12 +19,15 @@ int		main(int argc, char **argv)
 	t_mlx_image		img;
 
 	if (argc < 2)
+	{
 		write(1, "Error\nNo input\n", 15);
+		return (0);
+	}
 	else
 		parse_map(argv[1]);
 	if (!(mlx_ptr = mlx_init()))
 		return (0);
-	if (!(win_ptr = mlx_new_window(mlx_ptr, WINW, WINH, "oui")))
+	if (!(win_ptr = mlx_new_window(mlx_ptr, g_resolution.x, g_resolution.y, "oui")))
 		return (0);
 	img.image = mlx_new_image(mlx_ptr, 300, 300);
 	img.image_data = mlx_get_data_addr(img.image, &img.bpp, &img.size_line, &img.endian);
