@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/15 06:52:13 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/17 01:07:30 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct			s_lookup_table
 typedef struct			s_mlx_image
 {
 	void				*image;
-	char				*image_data;
+	int					*image_data;
 	int					bpp;
 	int					ppl;
 	int					size_line;
@@ -67,6 +67,21 @@ typedef struct			s_fvec3
 	double				z;
 }						t_fvec3;
 
+typedef struct			s_line3
+{
+	t_fvec3				orig;
+	t_fvec3				dest;
+}						t_line3;
+
+typedef struct			s_grid
+{
+	double				step;
+	t_fvec3				start;
+	t_fvec3				end;
+	t_fvec3				i;
+	t_fvec3				j;
+}						t_grid;
+
 typedef struct			s_camera
 {
 	t_fvec3				pos;
@@ -80,19 +95,19 @@ typedef struct			s_cameras
 	struct s_cameras	*next;
 }						t_cameras;
 
-typedef t_fvec3			(t_get_intersection)(t_fvec3 orig, t_fvec3 dir,
-															void *object);
+typedef t_fvec3			*(t_get_intersection)(t_line3 ray, void *object);
+
 typedef struct			s_sphere
 {
 	t_fvec3				pos;
 	double				radius;
-	int					color;
-	t_get_intersection	*get_intersection;
 }						t_sphere;
 
 typedef struct			s_objects
 {
 	void				*object;
+	t_get_intersection	*get_intersection;
+	int					color;
 	struct s_objects	*next;
 }						t_objects;
 
@@ -120,10 +135,17 @@ t_light					g_ambient_light;
 
 int						parse_map(char *filename);
 
+t_fvec3					fvec3_add(t_fvec3 a, t_fvec3 b);
+t_fvec3					fvec3_sub(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_div(t_fvec3 vec, double div);
 double					fvec3_length(t_fvec3 vec);
 t_fvec3					fvec3_normalize(t_fvec3 vec);
 t_fvec3					fvec3_product(t_fvec3 a, t_fvec3 b);
+t_fvec3					fvec3_scalar_mult(t_fvec3 v, double x)doublee					fvec3_dot_product(t_fvec3 a, t_fvec3 b);
+
+double					*resolve_second_degree(double a, double b, double c);
+
+t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
 //t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 #endif
