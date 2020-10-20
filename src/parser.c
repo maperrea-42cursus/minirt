@@ -6,13 +6,14 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/17 00:58:53 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/20 18:33:02 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	add_object(void *object, t_get_intersection *func, int color)
+void	add_object(void *object,
+		t_get_intersection *intersection, t_get_color *color)
 {
 	t_objects	*list;
 	t_objects	*new;
@@ -20,8 +21,8 @@ void	add_object(void *object, t_get_intersection *func, int color)
 	if (!(new = malloc(sizeof(t_objects))))
 		return;
 	new->object = object;
-	new->get_intersection = func;
-	new->color = color;
+	new->get_intersection = intersection;
+	new->get_color = color;
 	new->next = NULL;
 	if (!g_objects)
 	{
@@ -165,15 +166,14 @@ int		parse_l(char *line)
 int		parse_sp(char *line)
 {
 	t_sphere	*sphere;
-	int			color;
 
 	if (!(sphere = malloc(sizeof(t_sphere))))
 		return (0);
 	sphere->pos = next_fvec3(&line);
 	sphere->radius = next_float(&line) / 2.;
-	color = next_color(&line);
-	add_object(sphere, &sphere_intersection, color);
-	printf("sphere:\tposition: %.2f %.2f %.2f\n\tradius: %.2f\n\tcolor: %#010x\n", sphere->pos.x, sphere->pos.y, sphere->pos.z, sphere->radius, color);
+	sphere->color = next_color(&line);
+	add_object(sphere, &sphere_intersection, &sphere_color);
+	printf("sphere:\tposition: %.2f %.2f %.2f\n\tradius: %.2f\n\tcolor: %#010x\n", sphere->pos.x, sphere->pos.y, sphere->pos.z, sphere->radius, sphere->color);
 	return (1);
 }
 

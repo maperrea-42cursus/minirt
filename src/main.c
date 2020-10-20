@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/17 01:07:28 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/20 18:40:13 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 	t_fvec3		pos;
 	t_vec2		grid_pos;
 	t_objects	*closest;
+	t_line3		ray;
 
 	pos = grid.start;
 	grid_pos = (t_vec2){0, 0};
@@ -50,11 +51,12 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 	{
 		while (pos.x <= grid.end.x)
 		{
-			closest = get_closest_obj((t_line3){cam->pos, fvec3_normalize(fvec3_sub(pos, cam->pos))});
+			ray = (t_line3){cam->pos, fvec3_normalize(fvec3_sub(pos, cam->pos))};
+			closest = get_closest_obj(ray);
 			if (!closest)
-				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0x00000000;
+				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
 			else
-				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = closest->color;
+				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = closest->get_color(ray, closest->object);
 			grid_pos.x++;
 			pos = fvec3_add(pos, fvec3_scalar_mult(grid.i, grid.step));
 		}	

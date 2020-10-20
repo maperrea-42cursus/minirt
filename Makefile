@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/17 00:49:38 by maperrea         ###   ########.fr        #
+#    Updated: 2020/10/20 19:35:46 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ CC				= gcc
 
 RM				= rm -f
 
-#CFLAGS			= -Wall -Werror -Wextra
+CFLAGS			= -Wall -Werror -Wextra
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 				@$(CC) -O3 $(CFLAGS) -I$(INCDIR) -c $^ -o $@

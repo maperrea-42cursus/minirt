@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/17 01:07:25 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/20 22:43:03 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,16 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
 	else
 		return (result2);
 };
+
+int			sphere_color(t_line3 ray, void *sphere)
+{
+	int color;
+	t_sphere *sp;
+
+	(void)ray;
+	sp = sphere;
+	color = sp->color;
+	color = color_reflect(color, g_ambient_light.color);
+	color = color_multiply(color, g_ambient_light.power);
+	return (color);
+}

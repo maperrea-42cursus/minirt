@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/17 01:07:30 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/20 22:43:07 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,20 @@ typedef struct			s_cameras
 }						t_cameras;
 
 typedef t_fvec3			*(t_get_intersection)(t_line3 ray, void *object);
+typedef int				(t_get_color)(t_line3 ray, void *object);
 
 typedef struct			s_sphere
 {
 	t_fvec3				pos;
 	double				radius;
+	int					color;
 }						t_sphere;
 
 typedef struct			s_objects
 {
 	void				*object;
 	t_get_intersection	*get_intersection;
-	int					color;
+	t_get_color			*get_color;
 	struct s_objects	*next;
 }						t_objects;
 
@@ -141,11 +143,16 @@ t_fvec3					fvec3_div(t_fvec3 vec, double div);
 double					fvec3_length(t_fvec3 vec);
 t_fvec3					fvec3_normalize(t_fvec3 vec);
 t_fvec3					fvec3_product(t_fvec3 a, t_fvec3 b);
-t_fvec3					fvec3_scalar_mult(t_fvec3 v, double x)doublee					fvec3_dot_product(t_fvec3 a, t_fvec3 b);
+t_fvec3					fvec3_scalar_mult(t_fvec3 v, double x);
+double					fvec3_dot_product(t_fvec3 a, t_fvec3 b);
+
+int						color_multiply(int color, double factor);
+int						color_reflect(int a, int b);
 
 double					*resolve_second_degree(double a, double b, double c);
 
 t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
+int						sphere_color(t_line3 ray, void *sphere);
 //t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 #endif
