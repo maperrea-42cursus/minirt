@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/20 18:40:13 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/21 22:48:01 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ t_objects	*get_closest_obj(t_line3 ray)
 	while (objs)
 	{
 		intersection = objs->get_intersection(ray, objs->object);
-		if (intersection)
-		if (intersection && (!closest_obj ||
-				fvec3_length(fvec3_sub(*intersection, ray.orig)) <
-				fvec3_length(fvec3_sub(*closest_intersection, ray.orig))))
+		if (intersection && is_in_front(ray, *intersection))
 		{
-			closest_obj = objs;
-			closest_intersection = intersection;
+			if (!closest_obj || 
+				fvec3_length(fvec3_sub(*intersection, ray.orig)) <
+				fvec3_length(fvec3_sub(*closest_intersection, ray.orig)))
+			{
+				closest_obj = objs;
+				closest_intersection = intersection;
+			}
 		}
 		objs = objs->next;
 	}
@@ -46,23 +48,24 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 
 	pos = grid.start;
 	grid_pos = (t_vec2){0, 0};
-	//TODO start can be > end
-	while(pos.y <= grid.end.y)
+	while(grid_pos.y < grid.size.y)
 	{
-		while (pos.x <= grid.end.x)
+		while (grid_pos.x < grid.size.x)
 		{
 			ray = (t_line3){cam->pos, fvec3_normalize(fvec3_sub(pos, cam->pos))};
 			closest = get_closest_obj(ray);
 			if (!closest)
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
 			else
-				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = closest->get_color(ray, closest->object);
+				img->image_data[grid_pos.y * img->ppl + grid_pos.x]
+					= closest->get_color(ray, closest->object);
 			grid_pos.x++;
 			pos = fvec3_add(pos, fvec3_scalar_mult(grid.i, grid.step));
 		}	
 		grid_pos.y++;
 		grid_pos.x = 0;
-		pos = fvec3_add(grid.start, fvec3_scalar_mult(grid.j, grid_pos.y * grid.step));
+		pos = fvec3_add(grid.start,
+				fvec3_scalar_mult(grid.j, grid_pos.y * grid.step));
 	}
 }
 
@@ -71,23 +74,25 @@ void	get_image(t_mlx_image *img, t_camera *cam)
 	t_grid	grid;
 
 	grid.step = (tan(cam->fov / 2.)) / ((double)g_resolution.x / 2);
-	grid.i = fvec3_product((t_fvec3){0., 1., 0.}, cam->orientation);
-	grid.j = fvec3_product(cam->orientation, grid.i);
+	grid.i = fvec3_normalize(fvec3_product((t_fvec3){0., 1., 0.}, cam->orientation));
+	grid.j = fvec3_normalize(fvec3_product(cam->orientation, grid.i));
 	grid.start = fvec3_add(
 					fvec3_sub(
 						fvec3_sub(
 							fvec3_add(cam->pos, cam->orientation),
-							fvec3_scalar_mult(grid.i, grid.step * (g_resolution.x / 2))),
+							fvec3_scalar_mult(grid.i,
+								grid.step * (g_resolution.x / 2))),
 						fvec3_scalar_mult(grid.j, grid.step * (g_resolution.y / 2))),
 					fvec3_scalar_mult(fvec3_add(grid.i, grid.j), grid.step / 2));
 	grid.end = fvec3_sub(
 					fvec3_add(
 						fvec3_add(
 							fvec3_add(cam->pos, cam->orientation),
-							fvec3_scalar_mult(grid.i, grid.step * (g_resolution.x / 2))),
+							fvec3_scalar_mult(grid.i,
+								grid.step * (g_resolution.x / 2))),
 						fvec3_scalar_mult(grid.j, grid.step * (g_resolution.y / 2))),
 					fvec3_scalar_mult(fvec3_add(grid.i, grid.j), grid.step / 2));
-
+	grid.size = g_resolution;
 	printf("grid step: %.2g\ngrid i: %.2f %.2f %.2f\ngrid j:%.2f %.2f %.2f\ngrid start: %.2f,%.2f,%.2f\ngrid end:%.2f,%.2f,%.2f\n", grid.step, grid.i.x, grid.i.y, grid.i.z, grid.j.x, grid.j.y, grid.j.z, grid.start.x, grid.start.y, grid.start.z, grid.end.x, grid.end.y, grid.end.z);
 	cast_rays(img, grid, cam);
 }
@@ -117,6 +122,7 @@ int		main(int argc, char **argv)
 		mlx_put_image_to_window(mlx_ptr, win_ptr, (char *)img.image, 0, 0);
 		printf("done\n");
 	}
+	mlx_hook(win_ptr, 17, 0, exit_hook, NULL);
 	mlx_loop(mlx_ptr);
 	free_list();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/20 18:33:02 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/21 19:39:15 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ double	next_float(char **str)
 	double frac_part;
 	int		i;
 
+	i = 0;
 	to_next_number(str);
 	int_part = (double)ft_atoi(*str);
 	while (ft_isdigit((*str)[i]))
@@ -141,7 +142,7 @@ int		parse_c(char *line)
 	if (!(new = malloc(sizeof(t_cameras))))
 		return (0);
 	camera->pos = next_fvec3(&line);
-	camera->orientation = next_fvec3(&line);
+	camera->orientation = fvec3_normalize(next_fvec3(&line));
 	camera->fov = (next_float(&line) / 180.) * M_PI;
 	new->camera = camera;
 	cam_list = g_cameras;
