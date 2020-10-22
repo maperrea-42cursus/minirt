@@ -1,11 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    # #                                                     +:+ +:+         +:+      #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/20 19:35:46 by maperrea         ###   ########.fr        #
+#    Updated: 2020/10/22 17:30:51 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +63,7 @@ $(OBJDIR):
 				@mkdir -p $(OBJDIR)
 
 $(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) $(OBJDIR) $(OBJS)
-				$(CC) -O3 $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) \
+				$(CC) -O3 -fsanitize=address $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) \
 						$(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) -o $(NAME)
 
 clean:

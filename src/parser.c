@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/21 19:39:15 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/22 16:40:41 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,28 @@ void	add_object(void *object,
 	}
 	list = g_objects;
 	while (list->next)
+		list = list->next;
+	list->next = new;
+}
+
+void	add_light(void *light, t_get_luminosity *luminosity, t_get_pos *pos)
+{
+	t_lights	*list;
+	t_lights	*new;
+
+	if (!(new = malloc(sizeof(t_lights))))
+		return;
+	new->light = light;
+	new->get_luminosity = luminosity;
+	new->get_pos = pos;
+	new->next = NULL;
+	if (!g_lights)
+	{
+		g_lights = new;
+		return;
+	}
+	list = g_lights;
+	while(list->next)
 		list = list->next;
 	list->next = new;
 }
@@ -160,7 +182,15 @@ int		parse_c(char *line)
 
 int		parse_l(char *line)
 {
-	printf("%s\n", line);
+	t_spherical_light	*light;
+	
+	if (!(light = malloc(sizeof(t_spherical_light))))
+		return (0);
+	light->pos = next_fvec3(&line);
+	light->power = next_float(&line);
+	light->color = next_color(&line);
+	add_light(light, &spherical_light_luminosity, &spherical_light_pos);
+	printf("light:\tposition: %.2f %.2f %.2f\n\tpower: %.2f\n\tcolor: %#010x\n", light->pos.x, light->pos.y, light->pos.z, light->power, light->color);
 	return (1);
 }
 

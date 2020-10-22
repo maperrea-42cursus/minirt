@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/21 22:48:02 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/22 18:24:16 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,31 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
 
 int			sphere_color(t_line3 ray, void *sphere)
 {
-	int color;
-	t_sphere *sp;
+	int			color;
+	t_fvec3		*intersection;
+	t_objects	*closest;
+	t_lights	*lights;
+	t_line3		line;
 
-	(void)ray;
-	sp = sphere;
-	color = sp->color;
-	color = color_reflect(color, g_ambient_light.color);
-	color = color_multiply(color, g_ambient_light.power);
-	return (color);
+	return (((t_sphere *)sphere)->color);
+	lights = g_lights;
+	intersection = sphere_intersection(ray, sphere);
+	color = 0;
+	while (lights)
+	{
+		line = (t_line3){*intersection, 
+fvec3_normalize(fvec3_sub(lights->get_pos(lights->light), *intersection))};
+		closest = get_closest_obj(line, sphere);
+		if (!closest)
+			return (0x00ff0000);
+		if (!is_closer(
+fvec3_sub(*closest->get_intersection(line, closest->object), *intersection),
+fvec3_sub(lights->get_pos(lights->light), *intersection)))
+			return (0x0000ff00);
+		lights = lights->next;
+	}
+	if (closest->object != sphere)
+		return (0x00000000);
+	else
+		return (0x00ffffff);
 }

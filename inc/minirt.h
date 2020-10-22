@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/21 22:48:04 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/22 17:58:28 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,19 +114,21 @@ typedef struct			s_objects
 	struct s_objects	*next;
 }						t_objects;
 
-typedef double			(t_get_luminosity)(t_fvec3 pos, void* light); 
+typedef int				(t_get_luminosity)(void* light); 
+typedef t_fvec3			(t_get_pos)(void *light);
 
-typedef struct			s_light
+typedef struct			s_spherical_light
 {
 	t_fvec3				pos;
 	double 				power;
 	int					color;
-	t_get_luminosity	*get_luminosity;
-}						t_light;
+}						t_spherical_light;
 
 typedef struct			s_lights
 {
 	void				*light;
+	t_get_luminosity	*get_luminosity;
+	t_get_pos			*get_pos;
 	struct s_lights		*next;
 }						t_lights;
 
@@ -134,11 +136,12 @@ t_objects				*g_objects;
 t_lights				*g_lights;
 t_cameras				*g_cameras;
 t_vec2					g_resolution;
-t_light					g_ambient_light;
+t_spherical_light		g_ambient_light;
+//should really make a new ambient light type
 
 int						parse_map(char *filename);
 
-t_objects				*get_closest_obj(t_line3 ray);
+t_objects				*get_closest_obj(t_line3 ray, void *exclude);
 
 t_fvec3					fvec3_add(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_sub(t_fvec3 a, t_fvec3 b);
@@ -149,16 +152,21 @@ t_fvec3					fvec3_product(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_scalar_mult(t_fvec3 v, double x);
 double					fvec3_dot_product(t_fvec3 a, t_fvec3 b);
 int						is_in_front(t_line3 normal, t_fvec3 vec);
+int						is_closer(t_fvec3 a, t_fvec3 b);
+//t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 int						color_multiply(int color, double factor);
 int						color_reflect(int a, int b);
+int						color_add(int a, int b);
 
 double					*resolve_second_degree(double a, double b, double c);
 
 t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
 int						sphere_color(t_line3 ray, void *sphere);
 
+int						spherical_light_luminosity(void *light);
+t_fvec3					spherical_light_pos(void *light);
+
 int						exit_hook();
-//t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 #endif

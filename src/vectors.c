@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:25:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/21 22:47:59 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/22 17:42:27 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,17 @@ double		fvec3_dot_product(t_fvec3 a, t_fvec3 b)
 
 t_fvec3		fvec3_scalar_mult(t_fvec3 v, double x)
 {
-	return ((t_fvec3){ v.x * x, v.y * x, v.z * x});
+	return ((t_fvec3){v.x * x, v.y * x, v.z * x});
 }
 
 int			is_in_front(t_line3 normal, t_fvec3 vec)
 {
 	return (fvec3_dot_product(normal.dest, fvec3_sub(vec, normal.orig)) >= 0);
+}
+
+int 		is_closer(t_fvec3 a, t_fvec3 b)
+{
+	return (fvec3_length(a) <= fvec3_length(b));
 }
 
 double		fvec3_length(t_fvec3 vec)

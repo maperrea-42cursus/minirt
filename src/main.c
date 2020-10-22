@@ -6,13 +6,15 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/21 22:48:01 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/22 18:49:56 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_objects	*get_closest_obj(t_line3 ray)
+//somehow returning the intersection would be nice
+//might turn exclude in an array if needed
+t_objects	*get_closest_obj(t_line3 ray, void *exclude)
 {
 	t_objects	*objs;
 	t_objects	*closest_obj;
@@ -23,16 +25,18 @@ t_objects	*get_closest_obj(t_line3 ray)
 	closest_obj = NULL;
 	while (objs)
 	{
-		intersection = objs->get_intersection(ray, objs->object);
-		if (intersection && is_in_front(ray, *intersection))
+		if (objs->object != exclude)
 		{
-			if (!closest_obj || 
-				fvec3_length(fvec3_sub(*intersection, ray.orig)) <
-				fvec3_length(fvec3_sub(*closest_intersection, ray.orig)))
+			intersection = objs->get_intersection(ray, objs->object);
+			if (intersection && is_in_front(ray, *intersection)
+				&& (!closest_obj || is_closer(fvec3_sub(*intersection, ray.orig),
+							fvec3_sub(*closest_intersection, ray.orig))))
 			{
 				closest_obj = objs;
 				closest_intersection = intersection;
 			}
+			if (intersection && is_in_front(ray, *intersection))
+				printf("in front ");
 		}
 		objs = objs->next;
 	}
@@ -53,12 +57,15 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 		while (grid_pos.x < grid.size.x)
 		{
 			ray = (t_line3){cam->pos, fvec3_normalize(fvec3_sub(pos, cam->pos))};
-			closest = get_closest_obj(ray);
+			closest = get_closest_obj(ray, NULL);
 			if (!closest)
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
 			else
+			{
+				printf("found\n");
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x]
 					= closest->get_color(ray, closest->object);
+			}
 			grid_pos.x++;
 			pos = fvec3_add(pos, fvec3_scalar_mult(grid.i, grid.step));
 		}	
@@ -111,7 +118,7 @@ int		main(int argc, char **argv)
 	parse_map(argv[1]);
 	if (!(mlx_ptr = mlx_init()))
 		return (0);
-	if (!(win_ptr = mlx_new_window(mlx_ptr, g_resolution.x, g_resolution.y, "oui")))
+	if (!(win_ptr = mlx_new_window(mlx_ptr, g_resolution.x, g_resolution.y, "minirt")))
 		return (0);
 	img.image = mlx_new_image(mlx_ptr, g_resolution.x, g_resolution.y);
 	img.image_data = (int *)mlx_get_data_addr(img.image, &img.bpp, &img.size_line, &img.endian);
