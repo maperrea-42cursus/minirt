@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/22 16:40:41 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/23 19:08:06 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,16 @@ int		next_int(char **str)
 
 double	next_float(char **str)
 {
-	double int_part;
-	double frac_part;
+	double	int_part;
+	double	frac_part;
+	int		neg;
 	int		i;
 
 	i = 0;
 	to_next_number(str);
 	int_part = (double)ft_atoi(*str);
-	while (ft_isdigit((*str)[i]))
+	neg = (int_part < 0.);
+	while (ft_isdigit((*str)[i]) || (*str)[i] == '-')
 		i++;
 	if ((*str)[i] == '.')
 	{
@@ -90,6 +92,8 @@ double	next_float(char **str)
 		while (ft_isdigit((*str)[i]))
 			i++;
 		frac_part *= pow(10, -i);
+		if (neg)
+			frac_part = -frac_part;
 	}
 	else
 		frac_part = 0.;

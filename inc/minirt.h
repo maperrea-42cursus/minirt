@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/22 17:58:28 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/23 19:16:12 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ typedef struct			s_cameras
 }						t_cameras;
 
 typedef t_fvec3			*(t_get_intersection)(t_line3 ray, void *object);
-typedef int				(t_get_color)(t_line3 ray, void *object);
+typedef int				(t_get_color)(t_line3 ray,
+							t_fvec3 intersection, void *object);
 
 typedef struct			s_sphere
 {
@@ -141,7 +142,8 @@ t_spherical_light		g_ambient_light;
 
 int						parse_map(char *filename);
 
-t_objects				*get_closest_obj(t_line3 ray, void *exclude);
+t_objects				*get_closest_obj(t_line3 ray,
+							t_fvec3 *out_intersection, void *exclude);
 
 t_fvec3					fvec3_add(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_sub(t_fvec3 a, t_fvec3 b);
@@ -151,8 +153,10 @@ t_fvec3					fvec3_normalize(t_fvec3 vec);
 t_fvec3					fvec3_product(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_scalar_mult(t_fvec3 v, double x);
 double					fvec3_dot_product(t_fvec3 a, t_fvec3 b);
+double					fvec3_angle(t_fvec3 a, t_fvec3 b);
 int						is_in_front(t_line3 normal, t_fvec3 vec);
 int						is_closer(t_fvec3 a, t_fvec3 b);
+t_line3					line_from_points(t_fvec3 a, t_fvec3 b);
 //t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 int						color_multiply(int color, double factor);
@@ -162,7 +166,8 @@ int						color_add(int a, int b);
 double					*resolve_second_degree(double a, double b, double c);
 
 t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
-int						sphere_color(t_line3 ray, void *sphere);
+int						sphere_color(t_line3 ray,
+							t_fvec3 intersection, void *sphere);
 
 int						spherical_light_luminosity(void *light);
 t_fvec3					spherical_light_pos(void *light);

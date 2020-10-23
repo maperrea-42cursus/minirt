@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:25:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/22 17:42:27 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/23 19:16:25 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,14 @@ int 		is_closer(t_fvec3 a, t_fvec3 b)
 double		fvec3_length(t_fvec3 vec)
 {
 	return(sqrt(fvec3_dot_product(vec, vec)));
+}
+
+t_line3		line_from_points(t_fvec3 orig, t_fvec3 dest)
+{
+	return ((t_line3){orig, fvec3_normalize(fvec3_sub(dest, orig))});
+}
+
+double		fvec3_angle(t_fvec3 a, t_fvec3 b)
+{
+	return(acos(fvec3_dot_product(fvec3_normalize(a), fvec3_normalize(b))));
 }
