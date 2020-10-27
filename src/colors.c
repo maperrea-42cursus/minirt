@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:41:47 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/22 16:07:56 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/27 15:36:52 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ int		color_multiply(int color, double factor)
 
 	i = 0;
 	ptr = (unsigned char *)&color;
+//	printf("color: %#010x\nfactor: %.2f\n", color, factor);
 	while (i < 4)
 	{
+//		printf("b: %hhu\n", ptr[i]);
 		ptr[i] *= factor;
+//		printf("a: %hhu\n", ptr[i]);
 		i++;
 	}
 	return (color);

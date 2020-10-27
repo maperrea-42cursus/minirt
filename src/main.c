@@ -6,13 +6,12 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/23 22:33:45 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/27 17:45:49 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-//somehow returning the intersection would be nice
 //might turn exclude in an array if needed
 t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude)
 {
@@ -23,6 +22,7 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 
 	objs = g_objects;
 	closest_obj = NULL;
+	closest_intersection = NULL;
 	while (objs)
 	{
 		if (objs->object != exclude)
@@ -43,31 +43,37 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 		objs = objs->next;
 	}
 	if (closest_intersection)
-		*out_intersection = *closest_intersection;
+		ft_memcpy(out_intersection, closest_intersection, sizeof(t_fvec3));
 	return (closest_obj);
 }
 
 void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 {
 	t_fvec3		pos;
-	t_fvec3		intersection;
+	t_fvec3		*intersection;
 	t_vec2		grid_pos;
 	t_objects	*closest;
 	t_line3		ray;
 
 	pos = grid.start;
 	grid_pos = (t_vec2){0, 0};
+	if (!(intersection = malloc(sizeof(t_fvec3))))
+		return;
 	while(grid_pos.y < grid.size.y)
 	{
 		while (grid_pos.x < grid.size.x)
 		{
 			ray = line_from_points(cam->pos, pos);
-			closest = get_closest_obj(ray, &intersection, NULL);
+			closest = get_closest_obj(ray, intersection, NULL);
 			if (!closest)
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
 			else
+			{
+//				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x]
-					= closest->get_color(ray, intersection, closest->object);
+					= closest->get_color(ray, *intersection, closest->object);
+//				printf("color = %#010x\n", img->image_data[grid_pos.y * img->ppl + grid_pos.x]);
+			}
 			grid_pos.x++;
 			pos = fvec3_add(pos, fvec3_scalar_mult(grid.i, grid.step));
 		}	

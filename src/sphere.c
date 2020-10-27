@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/23 21:50:37 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/27 17:45:51 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,13 @@ int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)
 	t_line3		normal;
 
 	(void)ray;
+//	printf("\n");
 	lights = g_lights;
 	color = color_multiply(g_ambient_light.color, g_ambient_light.power);
+//	printf("ambient color: %#010x\n", color);
 	normal = line_from_points(((t_sphere *)sphere)->pos, intersection);
+	normal.orig = fvec3_add(normal.orig,
+			fvec3_scalar_mult(normal.dest, ((t_sphere *)sphere)->radius));
 	while (lights)
 	{
 		if (is_in_front(normal, lights->get_pos(lights->light)))
@@ -97,14 +101,16 @@ int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)
 					!is_closer(fvec3_sub(closest_intersection, intersection),
 					fvec3_sub(lights->get_pos(lights->light), intersection)))
 			{
+//				printf("light: %#010x\n", lights->get_luminosity(lights->light));
 				color = color_add(color, 
 					color_multiply(lights->get_luminosity(lights->light),
-				(M_PI_2 - fvec3_angle(normal.dest, line.dest) / M_PI_2)));
-				printf("%.2f,%.2f,%.2f %.2f,%.2f,%.2f\n%.2f\n", normal.dest.x, normal.dest.y, normal.dest.z, line.dest.x, line.dest.y, line.dest.z, fvec3_angle(normal.dest, line.dest));
+				(M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2));
+//				printf("%.2f,%.2f,%.2f %.2f,%.2f,%.2f\n%.2f\nlight on surface: %#010x\n", normal.dest.x, normal.dest.y, normal.dest.z, line.dest.x, line.dest.y, line.dest.z, (M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2, color);
 			}
 		}
 		lights = lights->next;
 	}
 	color = color_reflect(((t_sphere *)sphere)->color, color);
+//	printf("out color: %#010x\n", color);
 	return (color);
 }

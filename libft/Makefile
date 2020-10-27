@@ -6,7 +6,7 @@
 #    By: maperrea <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/07 10:56:01 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/14 19:40:51 by maperrea         ###   ########.fr        #
+#    Updated: 2020/10/27 17:02:42 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ RM			= rm -f
 CFLAGS		= -Wall -Wextra -Werror
 
 .c.o:
-			${CC} ${CFLAGS} -I${INCDIR} -c $^ -o $@
+			${CC} -g -fsanitize=address ${CFLAGS} -I${INCDIR} -c $^ -o $@
 
 all:		${NAME}
 
