@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/27 17:45:49 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:28:02 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 		{
 			intersection = objs->get_intersection(ray, objs->object);
 			if (intersection && is_in_front(ray, *intersection)
-				&& (!closest_obj || is_closer(fvec3_sub(*intersection, ray.orig),
-							fvec3_sub(*closest_intersection, ray.orig))))
+				&& (!closest_obj ||
+					is_closer(fvec3_sub(*intersection, ray.orig),
+					fvec3_sub(*closest_intersection, ray.orig))))
 			{
 				closest_obj = objs;
 				closest_intersection = intersection;
@@ -135,6 +136,7 @@ int		main(int argc, char **argv)
 	{
 		get_image(&img, g_cameras->camera);
 		mlx_put_image_to_window(mlx_ptr, win_ptr, (char *)img.image, 0, 0);
+//		system("leaks minirt");
 		printf("done\n");
 	}
 	mlx_hook(win_ptr, 17, 0, exit_hook, NULL);

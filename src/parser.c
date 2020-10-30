@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/23 19:08:06 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:09:34 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ int		parse_c(char *line)
 	camera->orientation = fvec3_normalize(next_fvec3(&line));
 	camera->fov = (next_float(&line) / 180.) * M_PI;
 	new->camera = camera;
+	new->next = NULL;
 	cam_list = g_cameras;
 	if (!cam_list)
 		g_cameras = new;
@@ -226,7 +227,17 @@ int		parse_sq(char *line)
 
 int		parse_cy(char *line)
 {
-	printf("%s\n", line);
+	t_cylinder		*cylinder;
+
+	if (!(cylinder = malloc(sizeof(t_cylinder))))
+		return (0);
+	cylinder->pos = next_fvec3(&line);
+	cylinder->axis = fvec3_normalize(next_fvec3(&line));
+	cylinder->radius = next_float(&line) / 2.;
+	cylinder->height = next_float(&line);
+	cylinder->color = next_color(&line);
+	add_object(cylinder, &cylinder_intersection, &cylinder_color);
+	printf("cylinder\n");
 	return (1);
 }
 
@@ -239,15 +250,15 @@ int		parse_tr(char *line)
 t_lookup_table	*get_lookup_table(void)
 {
 	static t_lookup_table table[] = {
+		{"sp", &parse_sp},
+		{"pl", &parse_pl},
+		{"cy", &parse_cy},
+		{"sq", &parse_sq},
+		{"tr", &parse_tr},
 		{"R", &parse_r},
 		{"A", &parse_a},
 		{"c", &parse_c},
 		{"l", &parse_l},
-		{"sp", &parse_sp},
-		{"pl", &parse_pl},
-		{"sq", &parse_sq},
-		{"cy", &parse_cy},
-		{"tr", &parse_tr},
 		{NULL, NULL}
 	};
 
@@ -271,13 +282,13 @@ int		parse_map(char *filename)
 			line++;
 		if (!*line)
 			continue;
-		while ((*lookup_table).key &&
-				ft_strncmp(line, (*lookup_table).key, ft_strlen((*lookup_table).key)))
+		while (lookup_table->key &&
+				ft_strncmp(line, lookup_table->key, ft_strlen(lookup_table->key)))
 			lookup_table++;
-		if (!(*lookup_table).key)
+		if (!lookup_table->key)
 			write(1, "Error\n", 6);
 		else
-			(*((*lookup_table).value))(line); //TODO error management
+			(*(lookup_table->value))(line); //TODO error management
 	}
 	return (1);
 }

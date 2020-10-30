@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/27 17:45:51 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/30 18:54:00 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,11 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
 	//printf("t: %g | %g\n", t[0], t[1]);
 	free(t);
 	//printf("result1: %g\nresult2 :%p\n", result1, result2);
-	if (fvec3_length(fvec3_sub(*result1, ray.orig))
-			< fvec3_length(fvec3_sub(*result2, ray.orig)))
+	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 		free(result2);
 	else
 		free(result1);
-	if (fvec3_length(fvec3_sub(*result1, ray.orig))
-			< fvec3_length(fvec3_sub(*result2, ray.orig)))
+	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 		return (result1);
 	else
 		return (result2);

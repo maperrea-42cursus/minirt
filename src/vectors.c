@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:25:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/23 19:16:25 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:24:40 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,23 @@ double		fvec3_length(t_fvec3 vec)
 t_line3		line_from_points(t_fvec3 orig, t_fvec3 dest)
 {
 	return ((t_line3){orig, fvec3_normalize(fvec3_sub(dest, orig))});
+}
+
+t_fvec3		*line_intersection(t_line3 a, t_line3 b)
+{
+	double	p;
+	double	q;
+	t_fvec3	*intersection;
+
+	q = (a.orig.y + ((b.orig.x - a.orig.x) / a.dest.x) * b.dest.y - b.orig.y) /
+		(b.dest.y - ((b.dest.x * a.dest.y) / a.dest.x));
+	p = (b.orig.x + q * b.dest.x - a.orig.x) / a.dest.x;
+	if(!(intersection = malloc(sizeof(t_fvec3))))
+		return (NULL);
+	intersection->x = a.orig.x + p * a.dest.x;
+	intersection->y = a.orig.y + p * a.dest.y;
+	intersection->z = a.orig.z + p * a.dest.z;
+	return (intersection);
 }
 
 double		fvec3_angle(t_fvec3 a, t_fvec3 b)

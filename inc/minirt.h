@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/23 19:16:12 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:22:06 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,15 @@ typedef struct			s_sphere
 	int					color;
 }						t_sphere;
 
+typedef struct			s_cylinder
+{
+	t_fvec3				pos;
+	t_fvec3				axis;
+	double				radius;
+	double				height;
+	int					color;
+}						t_cylinder;
+
 typedef struct			s_objects
 {
 	void				*object;
@@ -157,6 +166,7 @@ double					fvec3_angle(t_fvec3 a, t_fvec3 b);
 int						is_in_front(t_line3 normal, t_fvec3 vec);
 int						is_closer(t_fvec3 a, t_fvec3 b);
 t_line3					line_from_points(t_fvec3 a, t_fvec3 b);
+t_fvec3					*line_intersection(t_line3 a, t_line3 b);
 //t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 int						color_multiply(int color, double factor);
@@ -168,6 +178,10 @@ double					*resolve_second_degree(double a, double b, double c);
 t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
 int						sphere_color(t_line3 ray,
 							t_fvec3 intersection, void *sphere);
+
+t_fvec3					*cylinder_intersection(t_line3 ray, void *cylinder);
+int						cylinder_color(t_line3 ray,
+							t_fvec3 intersection, void *cylinder);
 
 int						spherical_light_luminosity(void *light);
 t_fvec3					spherical_light_pos(void *light);
