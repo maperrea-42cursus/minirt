@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/30 19:28:02 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/11/02 18:41:31 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 		while (grid_pos.x < grid.size.x)
 		{
 			ray = line_from_points(cam->pos, pos);
+			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 			closest = get_closest_obj(ray, intersection, NULL);
 			if (!closest)
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;

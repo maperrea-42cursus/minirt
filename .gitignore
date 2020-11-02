@@ -5,3 +5,4 @@ libmlx.dylib
 *.swiftdoc
 *.swiftmodule
 *.swp
+output
