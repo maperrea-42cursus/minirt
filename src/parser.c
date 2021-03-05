@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/30 19:09:34 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/02/18 18:41:54 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int		parse_r(char *line)
 		return (0);									//TODO error message
 	g_resolution.x = next_int(&line);
 	g_resolution.y = next_int(&line);
-	printf("resolution: %dx%d\n", g_resolution.x, g_resolution.y);
+	printf("\nresolution: %dx%d\n", g_resolution.x, g_resolution.y);
 	done = 1;
 	return (1);
 }
@@ -152,7 +152,7 @@ int		parse_a(char *line)
 	g_ambient_light.pos = (t_fvec3){0.0,0.0,0.0};
 	g_ambient_light.power = next_float(&line);
 	g_ambient_light.color = next_color(&line);
-	printf("ambient light: %.2f, %#010x\n", g_ambient_light.power, g_ambient_light.color);
+	printf("\nambient light: %.2f, %#010x\n", g_ambient_light.power, g_ambient_light.color);
 	done = 1;
 	return (1);
 }
@@ -181,7 +181,7 @@ int		parse_c(char *line)
 			cam_list = cam_list->next;
 		cam_list->next = new;
 	}
-	printf("camera:\tposition: %.2f %.2f %.2f\n\torientation: %.2f %.2f %.2f\n\tfov: %.2f\n", camera->pos.x, camera->pos.y, camera->pos.z, camera->orientation.x, camera->orientation.y, camera->orientation.z, camera->fov);
+	printf("\ncamera:\t\tposition: %.2f %.2f %.2f\n\t\torientation: %.2f %.2f %.2f\n\t\tfov: %.2f\n", camera->pos.x, camera->pos.y, camera->pos.z, camera->orientation.x, camera->orientation.y, camera->orientation.z, camera->fov);
 	return (1);
 }
 
@@ -195,7 +195,7 @@ int		parse_l(char *line)
 	light->power = next_float(&line);
 	light->color = next_color(&line);
 	add_light(light, &spherical_light_luminosity, &spherical_light_pos);
-	printf("light:\tposition: %.2f %.2f %.2f\n\tpower: %.2f\n\tcolor: %#010x\n", light->pos.x, light->pos.y, light->pos.z, light->power, light->color);
+	printf("\nlight:\t\tposition: %.2f %.2f %.2f\n\t\tpower: %.2f\n\t\tcolor: %#010x\n", light->pos.x, light->pos.y, light->pos.z, light->power, light->color);
 	return (1);
 }
 
@@ -209,7 +209,7 @@ int		parse_sp(char *line)
 	sphere->radius = next_float(&line) / 2.;
 	sphere->color = next_color(&line);
 	add_object(sphere, &sphere_intersection, &sphere_color);
-	printf("sphere:\tposition: %.2f %.2f %.2f\n\tradius: %.2f\n\tcolor: %#010x\n", sphere->pos.x, sphere->pos.y, sphere->pos.z, sphere->radius, sphere->color);
+	printf("\nsphere:\t\tposition: %.2f %.2f %.2f\n\t\tradius: %.2f\n\t\tcolor: %#010x\n", sphere->pos.x, sphere->pos.y, sphere->pos.z, sphere->radius, sphere->color);
 	return (1);
 }
 
@@ -237,7 +237,7 @@ int		parse_cy(char *line)
 	cylinder->height = next_float(&line);
 	cylinder->color = next_color(&line);
 	add_object(cylinder, &cylinder_intersection, &cylinder_color);
-	printf("cylinder\n");
+	printf("\ncylinder:\tposition: %.2f %.2f %.2f\n\t\taxis: %.2f %.2f %.2f\n\t\tdiameter: %.2f\n\t\theight: %.2f\n\t\tcolor: %#010x\n", cylinder->pos.x, cylinder->pos.y, cylinder->pos.z, cylinder->axis.x, cylinder->axis.y, cylinder->axis.z, cylinder->radius, cylinder->height, cylinder->color);
 	return (1);
 }
 

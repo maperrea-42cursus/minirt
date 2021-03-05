@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/30 18:54:00 by maperrea         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:30:42 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
 	free(t);
 	//printf("result1: %g\nresult2 :%p\n", result1, result2);
 	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
+	{
 		free(result2);
-	else
-		free(result1);
-	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 		return (result1);
+	}
 	else
+	{
+		free(result1);
 		return (result2);
+	}
 };
 
 int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)

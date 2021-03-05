@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2020/10/30 18:55:57 by maperrea         ###   ########.fr        #
+#    Updated: 2021/02/10 14:35:21 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ vpath %.h inc
 vpath %.c src
 vpath %.o obj
 
-NAME			= minirt
+NAME			= miniRT
 
 SRCDIR			= src
 

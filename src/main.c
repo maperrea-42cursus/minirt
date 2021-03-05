@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2020/11/02 18:41:31 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/02/18 21:32:40 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 		if (objs->object != exclude)
 		{
 			intersection = objs->get_intersection(ray, objs->object);
+			if (intersection)
+			{
+				printf("intersection: %f %f %f\n", intersection->x, intersection->y, intersection->z);
+				if (is_in_front(ray, *intersection))
+					printf("is in front\n");
+				else
+					printf("!is in front\n");
+			}
+			else
+				printf("!intersection\n");
 			if (intersection && is_in_front(ray, *intersection)
 				&& (!closest_obj ||
 					is_closer(fvec3_sub(*intersection, ray.orig),
@@ -68,7 +78,10 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 			closest = get_closest_obj(ray, intersection, NULL);
 			if (!closest)
+			{
+//				printf("!closest \n");
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
+			}
 			else
 			{
 //				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
@@ -110,7 +123,7 @@ void	get_image(t_mlx_image *img, t_camera *cam)
 						fvec3_scalar_mult(grid.j, grid.step * (g_resolution.y / 2))),
 					fvec3_scalar_mult(fvec3_add(grid.i, grid.j), grid.step / 2));
 	grid.size = g_resolution;
-	printf("grid step: %.2g\ngrid i: %.2f %.2f %.2f\ngrid j:%.2f %.2f %.2f\ngrid start: %.2f,%.2f,%.2f\ngrid end:%.2f,%.2f,%.2f\n", grid.step, grid.i.x, grid.i.y, grid.i.z, grid.j.x, grid.j.y, grid.j.z, grid.start.x, grid.start.y, grid.start.z, grid.end.x, grid.end.y, grid.end.z);
+//	printf("grid step: %.2g\ngrid i: %.2f %.2f %.2f\ngrid j:%.2f %.2f %.2f\ngrid start: %.2f,%.2f,%.2f\ngrid end:%.2f,%.2f,%.2f\n", grid.step, grid.i.x, grid.i.y, grid.i.z, grid.j.x, grid.j.y, grid.j.z, grid.start.x, grid.start.y, grid.start.z, grid.end.x, grid.end.y, grid.end.z);
 	cast_rays(img, grid, cam);
 }
 
