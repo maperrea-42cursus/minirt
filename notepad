@@ -1,0 +1,5 @@
+{ Aox + p * Adx = Box + q * Bdx
+{ Aoy + p * Ady = Boy + q * Bdy
+
+{ (Aox + p * Adx - Box) / Bdx = q
+{ p = (Boy + q * Bdy - Aoy) / Ady

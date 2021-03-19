@@ -29,7 +29,7 @@ t_fvec3		*cylinder_intersection(t_line3 ray, void *cylinder)
 	ray.dest = fvec3_normalize(ray.dest);
 	//w is weird for nearly parallel vectors
 	w = fvec3_product(ray.dest, cy->axis);
-	printf("w: %g %g %g\n", w.x, w.y, w.z);
+//	printf("w: %g %g %g\n", w.x, w.y, w.z);
 	w = fvec3_normalize(w);
 	//projects both points onto w
 	dist = fvec3_dot_product(w, fvec3_sub(ray.orig, cy->pos));
@@ -37,32 +37,31 @@ t_fvec3		*cylinder_intersection(t_line3 ray, void *cylinder)
 	//printf("ray: %g %g %g\nw: %g %g %g\ndist: %f\n", ray.dest.x, ray.dest.y, ray.dest.z, w.x, w.y, w.z, dist);
 	if (dist > cy->radius || dist < -cy->radius)
 		return (NULL);
-	printf("dist: %g\n", dist);
+	//printf("dist: %g\n", dist);
 	cos_alpha = dist / cy->radius;
-	printf("cos_alpha: %g\n", cos_alpha);
+	//printf("cos_alpha: %g\n", cos_alpha);
 	i = fvec3_add(fvec3_scalar_mult(w, cos_alpha),
 fvec3_scalar_mult(fvec3_product(w, cy->axis), sqrt(1 - pow(cos_alpha, 2))));
 	j = fvec3_sub(fvec3_scalar_mult(w, cos_alpha),
 fvec3_scalar_mult(fvec3_product(w, cy->axis), sqrt(1 - pow(cos_alpha, 2))));
-	printf("i: %f %f %f\nj: %f %f %f\n", i.x, i.y, i.z, j.x, j.y, j.z);
+	//printf("i: %f %f %f\nj: %f %f %f\n", i.x, i.y, i.z, j.x, j.y, j.z);
 	line1 = (t_line3){fvec3_add(cy->pos, fvec3_scalar_mult(i, cy->radius)), cy->axis};
-	//TODO CA CASSE DANS LINE INTERSECTION ON DIRAIT
 	result1 = line_intersection(ray, line1);
 	line2 = (t_line3){fvec3_add(cy->pos, fvec3_scalar_mult(j, cy->radius)), cy->axis};
 	result2 = line_intersection(ray, line2);
-	printf("line1: %f %f %f | %f %f %f\nline2: %f %f %f | %f %f %f\n", line1.orig.x, line1.orig.y, line1.orig.z, line1.dest.x, line1.dest.y, line1.dest.z, line2.orig.x, line2.orig.y, line2.orig.z, line2.dest.x, line2.dest.y, line2.dest.z);
-	printf("ray: %f %f %f | %f %f %f\n", ray.orig.x, ray.orig.y, ray.orig.z, ray.dest.x, ray.dest.y, ray.dest.z);
-	printf("result1: %f %f %f\nresult2: %f %f %f\n", result1->x, result1->y, result1->z, result2->x, result2->y, result2->z);
+	//printf("line1: %f %f %f | %f %f %f\nline2: %f %f %f | %f %f %f\n", line1.orig.x, line1.orig.y, line1.orig.z, line1.dest.x, line1.dest.y, line1.dest.z, line2.orig.x, line2.orig.y, line2.orig.z, line2.dest.x, line2.dest.y, line2.dest.z);
+	//printf("ray: %f %f %f | %f %f %f\n", ray.orig.x, ray.orig.y, ray.orig.z, ray.dest.x, ray.dest.y, ray.dest.z);
+	//printf("result1: %f %f %f\nresult2: %f %f %f\n", result1->x, result1->y, result1->z, result2->x, result2->y, result2->z);
 	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 	{
 		free(result2);
-		printf("i chosen\n");
+//		printf("i chosen\n");
 		return (result1);
 	}
 	else
 	{
 		free(result1);
-		printf("j chosen\n");
+//		printf("j chosen\n");
 		return (result2);
 	}
 }

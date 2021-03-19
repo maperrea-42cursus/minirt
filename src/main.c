@@ -28,16 +28,16 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 		if (objs->object != exclude)
 		{
 			intersection = objs->get_intersection(ray, objs->object);
-			if (intersection)
-			{
-				printf("intersection: %f %f %f\n", intersection->x, intersection->y, intersection->z);
-				if (is_in_front(ray, *intersection))
-					printf("is in front\n");
-				else
-					printf("!is in front\n");
-			}
-			else
-				printf("!intersection\n");
+//			if (intersection)
+//			{
+//				printf("intersection: %f %f %f\n", intersection->x, intersection->y, intersection->z);
+//				if (is_in_front(ray, *intersection))
+//					printf("is in front\n");
+//				else
+//					printf("!is in front\n");
+//			}
+//			else
+//				printf("!intersection\n");
 			if (intersection && is_in_front(ray, *intersection)
 				&& (!closest_obj ||
 					is_closer(fvec3_sub(*intersection, ray.orig),
@@ -75,10 +75,11 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 		while (grid_pos.x < grid.size.x)
 		{
 			ray = line_from_points(cam->pos, pos);
-			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
+//			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 			closest = get_closest_obj(ray, intersection, NULL);
 			if (!closest)
 			{
+//				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 //				printf("!closest \n");
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x] = 0;
 			}

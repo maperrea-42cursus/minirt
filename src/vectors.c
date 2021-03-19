@@ -75,10 +75,12 @@ t_fvec3		*line_intersection(t_line3 a, t_line3 b)
 	double	q;
 	t_fvec3	*intersection;
 
-	q = (a.orig.y + ((b.orig.x - a.orig.x) / a.dest.x) * b.dest.y - b.orig.y) /
-		(b.dest.y - ((b.dest.x * a.dest.y) / a.dest.x));
-	p = (b.orig.x + q * b.dest.x - a.orig.x) / a.dest.x;
-	if(!(intersection = malloc(sizeof(t_fvec3))))
+	p = ((b.dest.y * (b.orig.x - a.orig.x)) + (b.dest.x * (a.orig.y - b.orig.y))) /
+						((b.dest.y * a.dest.x) - (b.dest.x * a.dest.y));
+	q = ((a.dest.x * (a.orig.y - b.orig.y)) + (a.dest.y * (b.orig.x - a.orig.x))) /
+						((b.dest.y * a.dest.x) - (b.dest.x * a.dest.y));
+	intersection = malloc(sizeof(t_fvec3));
+	if (!intersection)
 		return (NULL);
 	intersection->x = a.orig.x + p * a.dest.x;
 	intersection->y = a.orig.y + p * a.dest.y;
