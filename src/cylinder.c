@@ -55,14 +55,14 @@ fvec3_scalar_mult(fvec3_product(w, cy->axis), sqrt(1 - pow(cos_alpha, 2))));
 	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 	{
 		free(result2);
-		extra->normal = (t_line3){result1, i};
+		extra->normal = (t_line3){*result1, i};
 //		printf("i chosen\n");
 		return (result1);
 	}
 	else
 	{
 		free(result1);
-		extra->normal = (t_line3){result2, j};
+		extra->normal = (t_line3){*result2, j};
 //		printf("j chosen\n");
 		return (result2);
 	}

@@ -98,7 +98,7 @@ typedef struct			s_cameras
 
 typedef union			u_extra
 {
-	t_fvec3				normal;
+	t_line3				normal;
 }						t_extra;
 
 typedef t_fvec3			*(t_get_intersection)(t_line3 ray,
