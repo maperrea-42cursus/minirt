@@ -96,9 +96,15 @@ typedef struct			s_cameras
 	struct s_cameras	*next;
 }						t_cameras;
 
-typedef t_fvec3			*(t_get_intersection)(t_line3 ray, void *object);
+typedef union			u_extra
+{
+	t_fvec3				normal;
+}						t_extra;
+
+typedef t_fvec3			*(t_get_intersection)(t_line3 ray,
+							void *object, t_extra *extra);
 typedef int				(t_get_color)(t_line3 ray,
-							t_fvec3 intersection, void *object);
+							t_fvec3 intersection, void *object, t_extra *extra);
 
 typedef struct			s_sphere
 {
@@ -152,7 +158,7 @@ t_spherical_light		g_ambient_light;
 int						parse_map(char *filename);
 
 t_objects				*get_closest_obj(t_line3 ray,
-							t_fvec3 *out_intersection, void *exclude);
+							t_fvec3 *out_intersection, void *exclude, t_extra *extra);
 
 t_fvec3					fvec3_add(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_sub(t_fvec3 a, t_fvec3 b);
@@ -175,13 +181,15 @@ int						color_add(int a, int b);
 
 double					*resolve_second_degree(double a, double b, double c);
 
-t_fvec3					*sphere_intersection(t_line3 ray, void *sphere);
+t_fvec3					*sphere_intersection(t_line3 ray, void *sphere,
+							t_extra *extra);
 int						sphere_color(t_line3 ray,
-							t_fvec3 intersection, void *sphere);
+							t_fvec3 intersection, void *sphere, t_extra *extra);
 
-t_fvec3					*cylinder_intersection(t_line3 ray, void *cylinder);
+t_fvec3					*cylinder_intersection(t_line3 ray, void *cylinder,
+							t_extra *extra);
 int						cylinder_color(t_line3 ray,
-							t_fvec3 intersection, void *cylinder);
+							t_fvec3 intersection, void *cylinder, t_extra *extra);
 
 int						spherical_light_luminosity(void *light);
 t_fvec3					spherical_light_pos(void *light);

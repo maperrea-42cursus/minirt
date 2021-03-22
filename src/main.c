@@ -13,12 +13,14 @@
 #include "minirt.h"
 
 //might turn exclude in an array if needed
-t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude)
+t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection,
+					void *exclude, t_extra *extra)
 {
 	t_objects	*objs;
 	t_objects	*closest_obj;
 	t_fvec3		*intersection;
 	t_fvec3		*closest_intersection;
+	t_extra		ex;
 
 	objs = g_objects;
 	closest_obj = NULL;
@@ -27,7 +29,7 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 	{
 		if (objs->object != exclude)
 		{
-			intersection = objs->get_intersection(ray, objs->object);
+			intersection = objs->get_intersection(ray, objs->object, &ex);
 //			if (intersection)
 //			{
 //				printf("intersection: %f %f %f\n", intersection->x, intersection->y, intersection->z);
@@ -45,6 +47,8 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection, void *exclude
 			{
 				closest_obj = objs;
 				closest_intersection = intersection;
+				if (extra)
+					*extra = ex;
 			}
 /*			if (intersection)
 				printf("line : %.2f,%.2f,%.2f %.2f,%.2f,%.2f\nintersection: %.2f,%.2f,%.2f\n", ray.orig.x, ray.orig.y, ray.orig.z, ray.dest.x, ray.dest.y, ray.dest.z, intersection->x, intersection->y, intersection->z);
@@ -65,6 +69,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 	t_vec2		grid_pos;
 	t_objects	*closest;
 	t_line3		ray;
+	t_extra		extra;
 
 	pos = grid.start;
 	grid_pos = (t_vec2){0, 0};
@@ -76,7 +81,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 		{
 			ray = line_from_points(cam->pos, pos);
 //			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
-			closest = get_closest_obj(ray, intersection, NULL);
+			closest = get_closest_obj(ray, intersection, NULL, &extra);
 			if (!closest)
 			{
 //				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
@@ -87,7 +92,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 			{
 //				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x]
-					= closest->get_color(ray, *intersection, closest->object);
+			= closest->get_color(ray, *intersection, closest->object, &extra);
 //				printf("color = %#010x\n", img->image_data[grid_pos.y * img->ppl + grid_pos.x]);
 			}
 			grid_pos.x++;

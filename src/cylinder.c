@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_fvec3		*cylinder_intersection(t_line3 ray, void *cylinder)
+t_fvec3		*cylinder_intersection(t_line3 ray, void *cylinder, t_extra *extra)
 {
 	t_cylinder	*cy;
 	t_fvec3		w;
@@ -55,20 +55,52 @@ fvec3_scalar_mult(fvec3_product(w, cy->axis), sqrt(1 - pow(cos_alpha, 2))));
 	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
 	{
 		free(result2);
+		extra->normal = (t_line3){result1, i};
 //		printf("i chosen\n");
 		return (result1);
 	}
 	else
 	{
 		free(result1);
+		extra->normal = (t_line3){result2, j};
 //		printf("j chosen\n");
 		return (result2);
 	}
 }
 
-int			cylinder_color(t_line3 ray, t_fvec3 intersection, void *cylinder)
+int			cylinder_color(t_line3 ray, t_fvec3 intersection,
+								void *cylinder, t_extra *extra)
 {
+	int			color;
+	t_objects	*closest;
+	t_fvec3		closest_intersection;
+	t_lights	*lights;
+	t_line3		line;
+	t_line3		normal;
+
 	(void)ray;
 	(void)intersection;
-	return (((t_cylinder *)cylinder)->color);
+	normal = extra->normal;
+	lights = g_lights;
+	while (lights)
+	{
+		if (is_in_front(normal, lights->get_pos(lights->light)))
+		{
+			line = line_from_points(intersection, lights->get_pos(lights->light));
+			closest = get_closest_obj(line, &closest_intersection, cylinder, NULL);
+			if (!closest ||
+					!is_closer(fvec3_sub(closest_intersection, intersection),
+					fvec3_sub(lights->get_pos(lights->light), intersection)))
+			{
+//				printf("light: %#010x\n", lights->get_luminosity(lights->light));
+				color = color_add(color, 
+					color_multiply(lights->get_luminosity(lights->light),
+				(M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2));
+//				printf("%.2f,%.2f,%.2f %.2f,%.2f,%.2f\n%.2f\nlight on surface: %#010x\n", normal.dest.x, normal.dest.y, normal.dest.z, line.dest.x, line.dest.y, line.dest.z, (M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2, color);
+			}
+		}
+		lights = lights->next;
+	}
+	color = color_reflect(((t_cylinder *)cylinder)->color, color);
+	return (color);
 }

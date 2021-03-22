@@ -42,13 +42,14 @@ double		*sphere_intersection_params(t_line3 ray, t_sphere *sphere)
 ** also, I do the same if twice as it is slightly shorter
 */
 
-t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
+t_fvec3		*sphere_intersection(t_line3 ray, void *sphere, t_extra *extra)
 {
 	t_fvec3		*result1;
 	t_fvec3		*result2;
 	double		*t;
 	double		*params;
 
+	(void)extra;
 	params = sphere_intersection_params(ray, sphere);
 	//printf("params: %g %g %g\n", params[0], params[1], params[2]);
 	t = resolve_second_degree(params[0], params[1], params[2]);
@@ -74,7 +75,8 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere)
 	}
 };
 
-int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)
+int			sphere_color(t_line3 ray, t_fvec3 intersection,
+					void *sphere, t_extra *extra)
 {
 	int			color;
 	t_objects	*closest;
@@ -84,6 +86,7 @@ int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)
 	t_line3		normal;
 
 	(void)ray;
+	(void)extra;
 //	printf("\n");
 	lights = g_lights;
 	color = color_multiply(g_ambient_light.color, g_ambient_light.power);
@@ -96,7 +99,7 @@ int			sphere_color(t_line3 ray, t_fvec3 intersection, void *sphere)
 		if (is_in_front(normal, lights->get_pos(lights->light)))
 		{
 			line = line_from_points(intersection, lights->get_pos(lights->light));
-			closest = get_closest_obj(line, &closest_intersection, sphere);
+			closest = get_closest_obj(line, &closest_intersection, sphere, NULL);
 			if (!closest ||
 					!is_closer(fvec3_sub(closest_intersection, intersection),
 					fvec3_sub(lights->get_pos(lights->light), intersection)))
