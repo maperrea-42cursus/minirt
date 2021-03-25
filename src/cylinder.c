@@ -52,19 +52,26 @@ fvec3_scalar_mult(fvec3_product(w, cy->axis), sqrt(1 - pow(cos_alpha, 2))));
 	//printf("line1: %f %f %f | %f %f %f\nline2: %f %f %f | %f %f %f\n", line1.orig.x, line1.orig.y, line1.orig.z, line1.dest.x, line1.dest.y, line1.dest.z, line2.orig.x, line2.orig.y, line2.orig.z, line2.dest.x, line2.dest.y, line2.dest.z);
 	//printf("ray: %f %f %f | %f %f %f\n", ray.orig.x, ray.orig.y, ray.orig.z, ray.dest.x, ray.dest.y, ray.dest.z);
 	//printf("result1: %f %f %f\nresult2: %f %f %f\n", result1->x, result1->y, result1->z, result2->x, result2->y, result2->z);
-	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig)))
+	if (is_closer(fvec3_sub(*result1, ray.orig), fvec3_sub(*result2, ray.orig))
+		&& fvec3_length(fvec3_sub(*result1, line1.orig)) <= cy->height / 2)
 	{
 		free(result2);
 		extra->normal = (t_line3){*result1, i};
 //		printf("i chosen\n");
 		return (result1);
 	}
-	else
+	else if (fvec3_length(fvec3_sub(*result2, line2.orig)) <= cy->height / 2)
 	{
 		free(result1);
 		extra->normal = (t_line3){*result2, j};
 //		printf("j chosen\n");
 		return (result2);
+	}
+	else
+	{
+		free(result1);
+		free(result2);
+		return (NULL);
 	}
 }
 
@@ -82,6 +89,7 @@ int			cylinder_color(t_line3 ray, t_fvec3 intersection,
 	(void)intersection;
 	normal = extra->normal;
 	lights = g_lights;
+	color = color_multiply(g_ambient_light.color, g_ambient_light.power);
 	while (lights)
 	{
 		if (is_in_front(normal, lights->get_pos(lights->light)))

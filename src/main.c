@@ -46,10 +46,13 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection,
 					fvec3_sub(*closest_intersection, ray.orig))))
 			{
 				closest_obj = objs;
+				free(closest_intersection);
 				closest_intersection = intersection;
 				if (extra)
 					*extra = ex;
 			}
+			else
+				free(intersection);
 /*			if (intersection)
 				printf("line : %.2f,%.2f,%.2f %.2f,%.2f,%.2f\nintersection: %.2f,%.2f,%.2f\n", ray.orig.x, ray.orig.y, ray.orig.z, ray.dest.x, ray.dest.y, ray.dest.z, intersection->x, intersection->y, intersection->z);
 			if (intersection && is_in_front(ray, *intersection))
@@ -58,14 +61,17 @@ t_objects	*get_closest_obj(t_line3 ray, t_fvec3 *out_intersection,
 		objs = objs->next;
 	}
 	if (closest_intersection)
+	{
 		ft_memcpy(out_intersection, closest_intersection, sizeof(t_fvec3));
+		free(closest_intersection);
+	}
 	return (closest_obj);
 }
 
 void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 {
 	t_fvec3		pos;
-	t_fvec3		*intersection;
+	t_fvec3		intersection;
 	t_vec2		grid_pos;
 	t_objects	*closest;
 	t_line3		ray;
@@ -73,15 +79,13 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 
 	pos = grid.start;
 	grid_pos = (t_vec2){0, 0};
-	if (!(intersection = malloc(sizeof(t_fvec3))))
-		return;
 	while(grid_pos.y < grid.size.y)
 	{
 		while (grid_pos.x < grid.size.x)
 		{
 			ray = line_from_points(cam->pos, pos);
 //			printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
-			closest = get_closest_obj(ray, intersection, NULL, &extra);
+			closest = get_closest_obj(ray, &intersection, NULL, &extra);
 			if (!closest)
 			{
 //				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
@@ -92,7 +96,7 @@ void		cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam)
 			{
 //				printf("grid_pos: %d %d\n", grid_pos.x, grid_pos.y);
 				img->image_data[grid_pos.y * img->ppl + grid_pos.x]
-			= closest->get_color(ray, *intersection, closest->object, &extra);
+			= closest->get_color(ray, intersection, closest->object, &extra);
 //				printf("color = %#010x\n", img->image_data[grid_pos.y * img->ppl + grid_pos.x]);
 			}
 			grid_pos.x++;
@@ -156,11 +160,12 @@ int		main(int argc, char **argv)
 	{
 		get_image(&img, g_cameras->camera);
 		mlx_put_image_to_window(mlx_ptr, win_ptr, (char *)img.image, 0, 0);
-//		system("leaks minirt");
+		free_list();
+		mlx_destroy_image(mlx_ptr, img.image);
+		CHECK_LEAKS;
 		printf("done\n");
 	}
 	mlx_hook(win_ptr, 17, 0, exit_hook, NULL);
 	mlx_loop(mlx_ptr);
-	free_list();
 	return (0);
 }

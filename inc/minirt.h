@@ -22,6 +22,7 @@
 # include "mlx.h"
 # include "libft.h"
 # include "get_next_line.h"
+# include "leak_detector.h"
 
 typedef int				(t_parse)(char *line);
 

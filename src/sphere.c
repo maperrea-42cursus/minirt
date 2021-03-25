@@ -54,9 +54,11 @@ t_fvec3		*sphere_intersection(t_line3 ray, void *sphere, t_extra *extra)
 	//printf("params: %g %g %g\n", params[0], params[1], params[2]);
 	t = resolve_second_degree(params[0], params[1], params[2]);
 	free(params);
+	if (!t)
+		return (NULL);
 	result1 = malloc(sizeof(t_fvec3));
 	result2 = malloc(sizeof(t_fvec3));
-	if (!t || !result1 || !result2)
+	if (!result1 || !result2)
 		return (NULL);
 	*result1 = substitute_in_line(ray, t[0]);
 	*result2 = substitute_in_line(ray, t[1]);
