@@ -37,11 +37,6 @@ double		*sphere_intersection_params(t_line3 ray, t_sphere *sphere)
 	return (params);
 }
 
-/*
-** I should really split the return (NULL) if into multiple ones but yeah, norm
-** also, I do the same if twice as it is slightly shorter
-*/
-
 t_fvec3		*sphere_intersection(t_line3 ray, void *sphere, t_extra *extra)
 {
 	t_fvec3		*result1;
