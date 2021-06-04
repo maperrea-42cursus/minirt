@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2020/12/01 18:35:43 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/04 17:00:31 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,13 @@ typedef struct			s_cylinder
 	int					color;
 }						t_cylinder;
 
+typedef struct			s_plane
+{
+	t_fvec3				pos;
+	t_fvec3				normal;
+	int					color;
+}						t_plane;
+
 typedef struct			s_objects
 {
 	void				*object;
@@ -191,6 +198,11 @@ t_fvec3					*cylinder_intersection(t_line3 ray, void *cylinder,
 							t_extra *extra);
 int						cylinder_color(t_line3 ray,
 							t_fvec3 intersection, void *cylinder, t_extra *extra);
+
+t_fvec3					*plane_intersection(t_line3 ray, void *plane,
+							t_extra *extra);
+int						plane_color(t_line3 ray,
+							t_fvec3 intersection, void *plane, t_extra *extra);
 
 int						spherical_light_luminosity(void *light);
 t_fvec3					spherical_light_pos(void *light);

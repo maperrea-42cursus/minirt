@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2021/02/18 18:41:54 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/04 16:59:16 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,16 @@ int		parse_sp(char *line)
 
 int		parse_pl(char *line)
 {
-	printf("%s\n", line);
+	t_plane		*plane;
+
+	plane = malloc(sizeof(t_plane));
+	if (!plane)
+		return (0);
+	plane->pos = next_fvec3(&line);
+	plane->normal = next_fvec3(&line);
+	plane->color = next_color(&line);
+	add_object(plane, &plane_intersection, &plane_color);
+	printf("\nplane:\t\tposition = %.2f %.2f %.2f\n\t\tnormal: %.2f %.2f %.2f\n\t\tcolor: %#010x\n", plane->pos.x, plane->pos.y, plane->pos.z, plane->normal.x, plane->normal.y, plane->normal.z, plane->color);
 	return (1);
 }
 
