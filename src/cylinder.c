@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:14:04 by maperrea          #+#    #+#             */
-/*   Updated: 2021/02/18 21:33:02 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/08 21:02:55 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,8 @@ int			cylinder_color(t_line3 ray, t_fvec3 intersection,
 			if (!closest ||
 					!is_closer(fvec3_sub(closest_intersection, intersection),
 					fvec3_sub(lights->get_pos(lights->light), intersection)))
-			{
-//				printf("light: %#010x\n", lights->get_luminosity(lights->light));
-				color = color_add(color, 
-					color_multiply(lights->get_luminosity(lights->light),
-				(M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2));
-//				printf("%.2f,%.2f,%.2f %.2f,%.2f,%.2f\n%.2f\nlight on surface: %#010x\n", normal.dest.x, normal.dest.y, normal.dest.z, line.dest.x, line.dest.y, line.dest.z, (M_PI_2 - fvec3_angle(normal.dest, line.dest)) / M_PI_2, color);
-			}
+			color = add_light_color(color, lights,
+						intersection, fvec3_angle(normal.dest, line.dest));
 		}
 		lights = lights->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/04 17:00:31 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/08 23:01:58 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ t_lights				*g_lights;
 t_cameras				*g_cameras;
 t_vec2					g_resolution;
 t_spherical_light		g_ambient_light;
+double					g_light_factor;
 //should really make a new ambient light type
 
 int						parse_map(char *filename);
@@ -186,6 +187,8 @@ t_fvec3					*line_intersection(t_line3 a, t_line3 b);
 int						color_multiply(int color, double factor);
 int						color_reflect(int a, int b);
 int						color_add(int a, int b);
+int 					add_light_color(int color, t_lights *lights,
+							t_fvec3 intersection, double angle);
 
 double					*resolve_second_degree(double a, double b, double c);
 

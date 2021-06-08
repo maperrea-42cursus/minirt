@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/04 16:59:16 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/08 23:05:02 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,13 @@ int		parse_a(char *line)
 	return (1);
 }
 
+int		parse_f(char *line)
+{
+	g_light_factor = next_float(&line);
+	printf("\nlight factor:\t%.2f\n", g_light_factor);
+	return (1);
+}
+
 int		parse_c(char *line)
 {
 	t_camera	*camera;
@@ -266,6 +273,7 @@ t_lookup_table	*get_lookup_table(void)
 		{"tr", &parse_tr},
 		{"R", &parse_r},
 		{"A", &parse_a},
+		{"F", &parse_f},
 		{"c", &parse_c},
 		{"l", &parse_l},
 		{NULL, NULL}
@@ -283,6 +291,7 @@ int		parse_map(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	ret = 1;
+	g_light_factor = 1;
 	while(ret == 1)
 	{
 		ret = get_next_line(fd, &line);

@@ -6,25 +6,25 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:41:47 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/27 15:36:52 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/08 23:04:13 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		color_multiply(int color, double factor)
+int	color_multiply(int color, double factor)
 {
 	unsigned char	*ptr;
 	int				i;
 
 	i = 0;
 	ptr = (unsigned char *)&color;
-//	printf("color: %#010x\nfactor: %.2f\n", color, factor);
 	while (i < 4)
 	{
-//		printf("b: %hhu\n", ptr[i]);
-		ptr[i] *= factor;
-//		printf("a: %hhu\n", ptr[i]);
+		if (ptr[i] * factor > 255)
+			ptr[i] = 255;
+		else
+			ptr[i] *= factor;
 		i++;
 	}
 	return (color);
@@ -65,4 +65,18 @@ int color_add(int a, int b)
 		i++;
 	}
 	return (a);
+}
+
+int add_light_color(int color, t_lights *lights, t_fvec3 intersection, double angle)
+{
+	double	distance;
+	double	factor;
+
+	distance = fvec3_length(fvec3_sub(intersection, lights->get_pos(lights->light)));
+	factor = (distance / g_light_factor) + 1;
+	factor = 1 / pow(factor, 2);
+	color = color_add(color, color_multiply(
+color_multiply(lights->get_luminosity(lights->light), ((M_PI_2 - angle) / M_PI_2)),
+	factor));
+	return (color);
 }
