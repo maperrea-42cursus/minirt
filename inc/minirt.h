@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 17:57:23 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 18:48:34 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,23 @@
 # include "mlx.h"
 # include "libft.h"
 
-typedef int				(t_parse)(char *line);
-typedef int				(t_checker)(char **line, void *args);
-typedef int				(t_check)(char *line, int line_nbr);
+typedef					int (t_parse)(char *line);
+typedef					int (t_checker)(char **line, void *args);
+typedef					int (t_check)(char *line, int line_nbr);
 
-typedef struct			s_lookup_table
+typedef struct s_lookup_table
 {
 	char				*key;
 	void				*value;
 }						t_lookup_table;
 
-typedef struct			s_mlx_data
+typedef struct s_mlx_data
 {
 	void				*mlx_ptr;
 	void				*win_ptr;
 }						t_mlx_data;
 
-typedef struct			s_mlx_image
+typedef struct s_mlx_image
 {
 	void				*image;
 	int					*image_data;
@@ -48,39 +48,39 @@ typedef struct			s_mlx_image
 	int					endian;
 }						t_mlx_image;
 
-typedef struct			s_vec2
+typedef struct s_vec2
 {
 	int					x;
 	int					y;
 }						t_vec2;
 
-typedef struct			s_vec3
+typedef struct s_vec3
 {
-	int 				x;
-	int 				y;
-	int 				z;
+	int					x;
+	int					y;
+	int					z;
 }						t_vec3;
 
-typedef struct			s_fvec2
+typedef struct s_fvec2
 {
 	double				x;
 	double				y;
 }						t_fvec2;
 
-typedef struct			s_fvec3
+typedef struct s_fvec3
 {
 	double				x;
 	double				y;
 	double				z;
 }						t_fvec3;
 
-typedef struct			s_line3
+typedef struct s_line3
 {
 	t_fvec3				orig;
 	t_fvec3				dest;
 }						t_line3;
 
-typedef struct			s_grid
+typedef struct s_grid
 {
 	double				step;
 	t_fvec3				start;
@@ -90,14 +90,14 @@ typedef struct			s_grid
 	t_vec2				size;
 }						t_grid;
 
-typedef struct			s_camera
+typedef struct s_camera
 {
 	t_fvec3				pos;
 	t_fvec3				orientation;
 	double				fov;
 }						t_camera;
 
-typedef struct			s_cameras
+typedef struct s_cameras
 {
 	void				*camera;
 	t_mlx_image			*img;
@@ -105,24 +105,24 @@ typedef struct			s_cameras
 	struct s_cameras	*previous;
 }						t_cameras;
 
-typedef union			u_extra
+typedef union u_extra
 {
 	t_line3				normal;
 }						t_extra;
 
-typedef t_fvec3			*(t_get_intersection)(t_line3 ray,
+typedef					t_fvec3 *(t_get_intersection)(t_line3 ray,
 							void *object, t_extra *extra);
-typedef int				(t_get_color)(t_fvec3 intersection,
+typedef					int (t_get_color)(t_fvec3 intersection,
 							void *object, t_extra *extra);
 
-typedef struct			s_sphere
+typedef struct s_sphere
 {
 	t_fvec3				pos;
 	double				radius;
 	int					color;
 }						t_sphere;
 
-typedef struct			s_cylinder
+typedef struct s_cylinder
 {
 	t_fvec3				pos;
 	t_fvec3				axis;
@@ -131,7 +131,7 @@ typedef struct			s_cylinder
 	int					color;
 }						t_cylinder;
 
-typedef struct			s_cy_data
+typedef struct s_cy_data
 {
 	t_fvec3		w;
 	double		dist;
@@ -143,14 +143,14 @@ typedef struct			s_cy_data
 	t_line3		line2;
 }						t_cy_data;
 
-typedef struct			s_plane
+typedef struct s_plane
 {
 	t_fvec3				pos;
 	t_fvec3				normal;
 	int					color;
 }						t_plane;
 
-typedef struct			s_objects
+typedef struct s_objects
 {
 	void				*object;
 	t_get_intersection	*get_intersection;
@@ -158,17 +158,17 @@ typedef struct			s_objects
 	struct s_objects	*next;
 }						t_objects;
 
-typedef int				(t_get_luminosity)(void* light); 
-typedef t_fvec3			(t_get_pos)(void *light);
+typedef					int (t_get_luminosity)(void* light);
+typedef					t_fvec3 (t_get_pos)(void *light);
 
-typedef struct			s_spherical_light
+typedef struct s_spherical_light
 {
 	t_fvec3				pos;
-	double 				power;
+	double				power;
 	int					color;
 }						t_spherical_light;
 
-typedef struct			s_lights
+typedef struct s_lights
 {
 	void				*light;
 	t_get_luminosity	*get_luminosity;
@@ -182,7 +182,6 @@ t_cameras				*g_cameras;
 t_vec2					g_resolution;
 t_spherical_light		g_ambient_light;
 double					g_light_factor;
-//should really make a new ambient light type
 
 t_objects				*is_closer_intersection(t_line3 ray, t_objects *objs,
 							t_fvec3 **closest_intersection, t_extra *extra);
@@ -237,7 +236,8 @@ int						check_cy(char *line, int line_nbr);
 void					check_map(char **file);
 
 t_objects				*get_closest_obj(t_line3 ray,
-							t_fvec3 *out_intersection, void *exclude, t_extra *extra);
+							t_fvec3 *out_intersection,
+							void *exclude, t_extra *extra);
 
 t_fvec3					fvec3_add(t_fvec3 a, t_fvec3 b);
 t_fvec3					fvec3_sub(t_fvec3 a, t_fvec3 b);
@@ -252,12 +252,11 @@ int						is_in_front(t_line3 normal, t_fvec3 vec);
 int						is_closer(t_fvec3 a, t_fvec3 b);
 t_line3					line_from_points(t_fvec3 a, t_fvec3 b);
 t_fvec3					*line_intersection(t_line3 a, t_line3 b);
-//t_fvec3					fvec3_rotate(t_fvec3 vec, t_fvec3 axis, double angle);
 
 int						color_multiply(int color, double factor);
 int						color_reflect(int a, int b);
 int						color_add(int a, int b);
-int 					get_light_color(t_lights *lights,
+int						get_light_color(t_lights *lights,
 							t_fvec3 intersection, double angle);
 int						get_illumination(t_fvec3 intersection, void *object,
 							t_line3 normal, t_lights *lights);
@@ -282,7 +281,7 @@ int						plane_color(t_fvec3 intersection,
 int						spherical_light_luminosity(void *light);
 t_fvec3					spherical_light_pos(void *light);
 
-int						exit_hook();
+int						exit_hook(void);
 int						key_hook(int keycode, t_mlx_data *mlx);
 
 #endif
