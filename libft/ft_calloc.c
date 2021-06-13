@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 13:05:25 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:41:28 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 01:06:13 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
 
-	if (!(ptr = malloc_list(size * count)))
+	ptr = malloc_list(size * count);
+	if (!ptr)
 		return (NULL);
 	ft_bzero(ptr, size * count);
 	return (ptr);

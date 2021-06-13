@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 19:19:03 by maperrea          #+#    #+#             */
-/*   Updated: 2020/01/11 10:48:50 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:27:23 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list *list;
+	t_list	*list;
 
-	if (!(list = malloc(sizeof(t_list))))
+	list = malloc(sizeof(t_list));
+	if (!list)
 		return (NULL);
 	list->content = content;
 	list->next = NULL;

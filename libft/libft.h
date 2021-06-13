@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 14:08:32 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 19:37:56 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/12 23:35:16 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 # include <string.h>
 # include <stdlib.h>
 
-typedef struct	s_list
+typedef struct s_list
 {
 	void				*content;
 	struct s_list		*next;
 }				t_list;
 
-typedef struct	s_malloc
+typedef struct s_malloc
 {
 	void				*ptr;
 	struct s_malloc		*next;
@@ -32,7 +32,7 @@ typedef struct	s_malloc
 
 # ifndef BIG_NUMBER_H
 
-typedef struct	s_dbl
+typedef struct s_dbl
 {
 	char				sign;
 	unsigned long		mantissa;
@@ -100,10 +100,10 @@ void			ft_lstdelone(t_list *list, void (*del)(void *));
 void			ft_lstclear(t_list **list, void (*del)(void *));
 void			ft_lstiter(t_list *list, void (*f)(void *));
 t_list			*ft_lstmap(t_list *list,
-							void *(*f)(void *), void (*del)(void *));
+					void *(*f)(void *), void (*del)(void *));
 
 void			*malloc_list(size_t size);
-void			free_list();
+void			free_list(void);
 void			free_one(void *ptr);
 
 #endif

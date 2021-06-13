@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 11:16:30 by maperrea          #+#    #+#             */
-/*   Updated: 2020/02/06 21:16:23 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:04:16 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 size_t	ft_strlcat(char *dst, const char *src, int size)
 {
-	int i;
-	int j;
-	int return_val;
+	int	i;
+	int	j;
+	int	return_val;
 
-	return_val = ft_strlen(src) +
-		((ft_strlen(dst) > size) ? size : ft_strlen(dst));
+	if (ft_strlen(dst) > size)
+		return_val = ft_strlen(src) + size;
+	else
+		return_val = ft_strlen(src) + ft_strlen(dst);
 	i = 0;
 	j = ft_strlen(dst);
 	if (j > size)

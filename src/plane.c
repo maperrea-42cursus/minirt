@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 16:59:31 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/08 21:07:00 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 09:02:39 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,25 @@ t_fvec3	*plane_intersection(t_line3 ray, void *plane, t_extra *extra)
 	return (result);
 }
 
-int		plane_color(t_line3 ray, t_fvec3 intersection, void *plane, t_extra *extra)
+int	plane_color(t_fvec3 intersection, void *plane, t_extra *extra)
 {
-	int 		color;
-	t_objects	*closest;
-	t_fvec3		closest_intersection;
+	int			color;
 	t_lights	*lights;
-	t_line3		line;
-	t_fvec3		normal;
+	t_line3		normal;
 	t_plane		*pl;
 
-	(void)ray;
 	(void)extra;
 	pl = plane;
 	lights = g_lights;
 	color = color_multiply(g_ambient_light.color, g_ambient_light.power);
-	normal = pl->normal;
+	normal = (t_line3){pl->pos, pl->normal};
 	while (lights)
 	{
-		if (!is_in_front((t_line3){pl->pos, pl->normal}, lights->get_pos(lights->light)))
-			normal = fvec3_scalar_mult(normal, -1.0);
-		line = line_from_points(intersection, lights->get_pos(lights->light));
-		closest = get_closest_obj(line, &closest_intersection, plane, NULL);
-		if (!closest ||
-				!is_closer(fvec3_sub(closest_intersection, intersection),
-				fvec3_sub(lights->get_pos(lights->light), intersection)))
-			color = add_light_color(color, lights, intersection, fvec3_angle(normal, line.dest));
+		if (!is_in_front((t_line3){pl->pos, pl->normal},
+			lights->get_pos(lights->light)))
+			normal.dest = fvec3_scalar_mult(pl->normal, -1.0);
+		color = color_add(color, get_illumination(intersection, plane,
+					normal, lights));
 		lights = lights->next;
 	}
 	color = color_reflect(pl->color, color);

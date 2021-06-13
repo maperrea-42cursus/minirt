@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 15:28:25 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/27 17:05:26 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:26:04 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!dst && !src)

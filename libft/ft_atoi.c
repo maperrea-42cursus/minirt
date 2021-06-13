@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:31:40 by maperrea          #+#    #+#             */
-/*   Updated: 2020/02/06 18:47:47 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 01:12:46 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ long long	ft_atoi(const char *str)
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
-		neg = str[i++] == '-' ? 1 : 0;
+		neg = (str[i++] == '-');
 	while (str[i] >= 48 && str[i] <= 57)
 		result = (result * 10) + (str[i++] - 48);
-	return (neg == 1 ? result * -1 : result);
+	return (((neg == 1) * -result) + ((neg != 1) * result));
 }

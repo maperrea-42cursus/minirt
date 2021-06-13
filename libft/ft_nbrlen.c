@@ -6,13 +6,13 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:37:05 by maperrea          #+#    #+#             */
-/*   Updated: 2020/02/13 16:56:09 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:25:28 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_nbrlen(long long nbr)
+int	ft_nbrlen(long long nbr)
 {
 	int					size;
 	unsigned long long	n;

@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 15:38:40 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/14 18:33:21 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 02:56:18 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@
 #  define BUFFER_SIZE 32
 # endif
 
-typedef struct	s_list
+typedef struct s_list
 {
 	struct s_file	*content;
 	struct s_list	*next;
 }				t_list;
 
-typedef struct	s_file
+typedef struct s_file
 {
 	int		fd;
 	char	*str;

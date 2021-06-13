@@ -6,13 +6,13 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 15:21:47 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 15:50:43 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 02:47:44 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_dbl				dbl_to_t_dbl(double n)
+t_dbl	dbl_to_t_dbl(double n)
 {
 	t_dbl			dbl;
 	unsigned char	*nbr;
@@ -41,10 +41,10 @@ t_dbl				dbl_to_t_dbl(double n)
 	return (dbl);
 }
 
-char				*pos_exp(char *nbr, int exponent)
+char	*pos_exp(char *nbr, int exponent)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	if (!exponent)
 		return (nbr);
@@ -70,24 +70,24 @@ char				*pos_exp(char *nbr, int exponent)
 	return (pos_exp(nbr, exponent - 1));
 }
 
-char				*neg_exp(char *nbr, int exponent)
+char	*neg_exp(char *nbr, int exponent)
 {
-	int i;
-	int dot_pos;
+	int	i;
+	int	dot_pos;
 
 	if (!exponent)
 		return (nbr);
 	dot_pos = ft_strchr(nbr, '.');
 	i = ft_strlen(nbr) - 2;
 	if ((nbr[i + 1] - '0') % 2)
-		nbr = ft_strjoin(nbr, dot_pos == -1 ? ".5" : "5");
+		nbr = ft_strjoin(nbr, ".5" + (dot_pos == -1));
 	nbr[i + 1] = ((nbr[i + 1] - '0') / 2) + '0';
 	while (i >= 0)
 	{
 		if (i == dot_pos)
 			i--;
 		if ((nbr[i] - '0') % 2)
-			nbr[i + (i + 1 == dot_pos ? 2 : 1)] += 5;
+			nbr[i + 1 + (i + 1 == dot_pos)] += 5;
 		nbr[i] = ((nbr[i] - '0') / 2) + '0';
 		i--;
 	}
@@ -96,7 +96,7 @@ char				*neg_exp(char *nbr, int exponent)
 	return (neg_exp(nbr, exponent + 1));
 }
 
-char				*ftoa(double nbr)
+char	*ftoa(double nbr)
 {
 	char			*str;
 	t_dbl			dbl;
@@ -105,13 +105,15 @@ char				*ftoa(double nbr)
 	dbl = dbl_to_t_dbl(nbr);
 	if (dbl.exponent == 2047)
 	{
-		str = ft_strdup(dbl.mantissa ? "nan" : "inf");
-		return (dbl.sign && !dbl.mantissa ? ft_strjoin("-", str) : str);
+		if (dbl.mantissa)
+			str = ft_strdup("nan");
+		else
+			str = ft_strdup("inf");
+		return (ft_strjoin("-" + (dbl.sign && !dbl.mantissa), str));
 	}
-	i = 52;
-	dbl.mantissa <<= 1;
-	while (!((dbl.mantissa >>= 1) & 1) && i)
-		i--;
+	i = 53;
+	while (--i && !(dbl.mantissa & 1))
+		dbl.mantissa >>= 1;
 	dbl.exponent -= i;
 	str = ft_utoa(dbl.mantissa);
 	if (dbl.exponent > 0)
@@ -120,5 +122,5 @@ char				*ftoa(double nbr)
 		str = neg_exp(str, dbl.exponent);
 	if (dbl.exponent >= 0)
 		str = ft_strjoin(str, ".");
-	return (dbl.sign ? ft_strjoin("-", str) : str);
+	return (ft_strjoin("-" + dbl.sign, str));
 }

@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 13:36:16 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:46:47 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:06:12 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ char	*ft_strdup(const char *str)
 {
 	char	*dup;
 
-	if (!(dup = malloc_list(sizeof(char) * (ft_strlen(str) + 1))))
+	dup = malloc_list(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
 		return (NULL);
 	(void)ft_strlcpy(dup, str, ft_strlen(str) + 1);
 	return (dup);

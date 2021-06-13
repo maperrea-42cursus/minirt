@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/02 16:01:36 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:53:41 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/12 23:34:08 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ void	*malloc_list(size_t size)
 	t_malloc	*new_malloc;
 	t_malloc	*tmp;
 
-	if (!(ptr = malloc(size)))
+	ptr = malloc(size);
+	if (!ptr)
 		return (NULL);
-	if (!(new_malloc = malloc(sizeof(t_malloc))))
+	new_malloc = malloc(sizeof(t_malloc));
+	if (!new_malloc)
 		return (NULL);
 	new_malloc->ptr = ptr;
 	new_malloc->next = NULL;

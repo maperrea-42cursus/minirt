@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 18:11:11 by maperrea          #+#    #+#             */
-/*   Updated: 2020/01/07 18:13:22 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:40:29 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	ft_isalnum(int c)
 {
-	return ((ft_isdigit(c) || ft_isalpha(c)) ? 1 : 0);
+	return (ft_isdigit(c) || ft_isalpha(c));
 }

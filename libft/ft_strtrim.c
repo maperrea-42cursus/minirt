@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 14:19:17 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:47:27 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/12 23:53:04 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	in_set(char c, const char *set)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (set[i])
@@ -26,7 +26,7 @@ static int	in_set(char c, const char *set)
 	return (0);
 }
 
-char		*ft_strtrim(const char *str, const char *set)
+char	*ft_strtrim(const char *str, const char *set)
 {
 	size_t	start;
 	size_t	end;
@@ -44,7 +44,8 @@ char		*ft_strtrim(const char *str, const char *set)
 	size = end - start + 1;
 	if (start > end)
 		size = 1;
-	if (!(new = malloc_list(sizeof(char) * size)))
+	new = malloc_list(sizeof(char) * size);
+	if (!new)
 		return (NULL);
 	(void)ft_strlcpy(new, &(str[start]), size);
 	return (new);

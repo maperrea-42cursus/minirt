@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 18:27:59 by maperrea          #+#    #+#             */
-/*   Updated: 2020/01/09 18:41:06 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:25:09 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_putnbr_fd(int nbr, int fd)
 {
-	long n;
-	char c;
+	long	n;
+	char	c;
 
 	n = nbr;
 	if (n < 0)

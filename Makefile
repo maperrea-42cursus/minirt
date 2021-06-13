@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2021/02/10 14:35:21 by maperrea         ###   ########.fr        #
+#    Updated: 2021/06/13 08:35:54 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ RM				= rm -f
 
 CFLAGS			= -Wall -Werror -Wextra
 
-DEBUG			= -g -fsanitize=address #-D CHECK_LEAKS
+DEBUG			= #-g -fsanitize=address #-D CHECK_LEAKS
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 				@$(CC) $(DEBUG) -O3 $(CFLAGS) -I$(INCDIR) -c $^ -o $@

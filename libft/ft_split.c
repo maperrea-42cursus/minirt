@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:38:13 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 16:46:26 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 00:19:01 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	array_free(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])
@@ -27,7 +27,6 @@ static int	rec_split(char ***output, const char **str, char c, int count)
 	int		i;
 	int		flag;
 	int		len;
-	char	*ostr;
 
 	i = 0;
 	flag = 0;
@@ -38,12 +37,12 @@ static int	rec_split(char ***output, const char **str, char c, int count)
 		(*str)++;
 	while ((*str)[len] && (*str)[len] != c)
 		len++;
-	if (!(ostr = malloc_list(sizeof(char) * (len + 1))))
+	**output = malloc_list(sizeof(char) * (len + 1));
+	if (!**output)
 		return (1);
 	while (**str && **str != c)
-		ostr[i++] = *((*str)++);
-	ostr[i] = 0;
-	**output = ostr;
+		(**output)[i++] = *((*str)++);
+	(**output)[i] = 0;
 	(*output)++;
 	if (rec_split(output, str, c, count - 1))
 		flag = 1;
@@ -51,7 +50,7 @@ static int	rec_split(char ***output, const char **str, char c, int count)
 	return (flag);
 }
 
-char		**ft_split(const char *s, char c)
+char	**ft_split(const char *s, char c)
 {
 	char	**output;
 	int		count;
@@ -70,7 +69,8 @@ char		**ft_split(const char *s, char c)
 		while (s[i] && s[i] == c)
 			i++;
 	}
-	if (!(output = ft_calloc(1, sizeof(char *) * (count + 1))))
+	output = ft_calloc(1, sizeof(char *) * (count + 1));
+	if (!output)
 		return (NULL);
 	if (rec_split(&output, &s, c, count))
 		array_free(output);

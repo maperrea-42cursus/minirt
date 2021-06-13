@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:41:47 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/08 23:04:13 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 07:04:09 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	color_reflect(int a, int b)
 	return (a);
 }
 
-int color_add(int a, int b)
+int	color_add(int a, int b)
 {
 	unsigned char	*ptr_a;
 	unsigned char	*ptr_b;
@@ -67,16 +67,36 @@ int color_add(int a, int b)
 	return (a);
 }
 
-int add_light_color(int color, t_lights *lights, t_fvec3 intersection, double angle)
+int	get_light_color(t_lights *lights, t_fvec3 intersection, double angle)
 {
+	int		color;
 	double	distance;
 	double	factor;
 
-	distance = fvec3_length(fvec3_sub(intersection, lights->get_pos(lights->light)));
+	distance = fvec3_length(fvec3_sub(intersection,
+				lights->get_pos(lights->light)));
 	factor = (distance / g_light_factor) + 1;
 	factor = 1 / pow(factor, 2);
-	color = color_add(color, color_multiply(
-color_multiply(lights->get_luminosity(lights->light), ((M_PI_2 - angle) / M_PI_2)),
-	factor));
+	color = color_multiply(
+			color_multiply(lights->get_luminosity(lights->light),
+				((M_PI_2 - angle) / M_PI_2)),
+			factor);
 	return (color);
+}
+
+int	get_illumination(t_fvec3 intersection, void *object,
+		t_line3 normal, t_lights *lights)
+{
+	t_fvec3		closest_intersection;
+	t_objects	*closest;
+	t_line3		line;
+
+	line = line_from_points(intersection, lights->get_pos(lights->light));
+	closest = get_closest_obj(line, &closest_intersection, object, NULL);
+	if (!closest
+		|| !is_closer(fvec3_sub(closest_intersection, intersection),
+			fvec3_sub(lights->get_pos(lights->light), intersection)))
+		return (get_light_color(lights,
+				intersection, fvec3_angle(normal.dest, line.dest)));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:34:12 by maperrea          #+#    #+#             */
-/*   Updated: 2020/10/02 15:50:18 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/12 23:38:09 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	get_size(unsigned long long n)
 {
-	int size;
+	int	size;
 
 	size = 0;
 	if (n == 0)
@@ -27,14 +27,15 @@ static int	get_size(unsigned long long n)
 	return (size);
 }
 
-char		*ft_utoa(unsigned long long n)
+char	*ft_utoa(unsigned long long n)
 {
 	int					size;
 	char				*nbr;
 
 	size = 0;
 	size += get_size(n);
-	if (!(nbr = ft_calloc(1, sizeof(char) * (size + 1))))
+	nbr = ft_calloc(1, sizeof(char) * (size + 1));
+	if (!nbr)
 		return (NULL);
 	size--;
 	while (size >= 0)
