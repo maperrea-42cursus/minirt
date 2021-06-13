@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 13:44:22 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 17:57:23 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <math.h>
 # include "mlx.h"
 # include "libft.h"
-# include "get_next_line.h"
 
 typedef int				(t_parse)(char *line);
 typedef int				(t_checker)(char **line, void *args);
@@ -195,8 +194,46 @@ void					cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam);
 void					get_image(t_mlx_image *img, t_camera *cam);
 void					init_cam(t_mlx_data *mlx);
 
+void					add_object(void *object,
+							t_get_intersection *intersection,
+							t_get_color *color);
+void					add_light(void *light, t_get_luminosity *luminosity,
+							t_get_pos *pos);
+void					add_camera(void *camera);
+void					to_next_number(char **str);
+int						next_int(char **str);
+double					next_float(char **str);
+t_vec3					next_vec3(char **str);
+t_fvec3					next_fvec3(char **str);
+int						next_color(char **str);
+int						parse_f(char *line);
+int						parse_c(char *line);
+int						parse_l(char *line);
+int						parse_sp(char *line);
+int						parse_pl(char *line);
+int						parse_r(char *line);
+int						parse_a(char *line);
+int						parse_cy(char *line);
 void					parse_map(char *filename);
 
+void					error_exit(const char *str);
+int						skip_spaces(char **str);
+int						check_int(char **str, void *range);
+int						check_float(char **str, void *data);
+int						check_vec3(char **str, void *data);
+int						check_fvec3(char **str, void *data);
+int						check_color(char **str, void *data);
+int						line_checker(char *line, t_checker **checkers,
+							void **args);
+int						required_params(int res, int light, int cam);
+int						check_r(char *line, int line_nbr);
+int						check_a(char *line, int line_nbr);
+int						check_f(char *line, int line_nbr);
+int						check_c(char *line, int line_nbr);
+int						check_l(char *line, int line_nbr);
+int						check_sp(char *line, int line_nbr);
+int						check_pl(char *line, int line_nbr);
+int						check_cy(char *line, int line_nbr);
 void					check_map(char **file);
 
 t_objects				*get_closest_obj(t_line3 ray,

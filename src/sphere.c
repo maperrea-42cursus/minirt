@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 18:59:33 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 09:02:39 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 16:39:02 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_fvec3	*sphere_intersection(t_line3 ray, void *sphere, t_extra *extra)
 	*result2 = substitute_in_line(ray, t[1]);
 	free(t);
 	if (is_closer(fvec3_sub(*result1, ray.orig),
-			fvec3_sub(*result2, ray.orig)))
+			fvec3_sub(*result2, ray.orig)) || !is_in_front(ray, *result2))
 		return (free_return(result2, result1));
 	else
 		return (free_return(result1, result2));

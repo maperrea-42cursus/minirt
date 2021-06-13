@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2021/06/13 14:08:40 by maperrea         ###   ########.fr        #
+#    Updated: 2021/06/13 17:57:47 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,6 @@ LIBFT			= libft.a
 
 LIBDIR			= libft
 
-GNL				= gnl.a
-
-GNLDIR			= gnl
-
 CC				= gcc
 
 RM				= rm -f
@@ -58,13 +54,10 @@ $(MLX):
 $(LIBDIR)/$(LIBFT):
 				make -C $(LIBDIR)
 
-$(GNLDIR)/$(GNL):
-				make -C $(GNLDIR)
-
 $(OBJDIR):
 				@mkdir -p $(OBJDIR)
 
-$(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) $(OBJDIR) $(OBJS)
+$(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(OBJDIR) $(OBJS)
 				$(CC) $(DEBUG) -O3 $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) \
 						$(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) -o $(NAME)
 

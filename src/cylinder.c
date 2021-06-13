@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:14:04 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 09:02:39 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 17:32:34 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ t_fvec3	*cylinder_intersection(t_line3 ray, void *cylinder, t_extra *extra)
 {
 	t_cylinder	*cy;
 	t_cy_data	data;
+	t_fvec3		yes;
 
 	cy = (t_cylinder *)cylinder;
 	ray.dest = fvec3_normalize(ray.dest);
 	data.w = fvec3_normalize(fvec3_product(ray.dest, cy->axis));
-	data.dist = fvec3_dot_product(data.w, fvec3_sub(ray.orig, cy->pos));
+	data.dist = fvec3_dot_product(data.w, yes = fvec3_sub(ray.orig, cy->pos));
 	if (data.dist > cy->radius || data.dist < -cy->radius)
 		return (NULL);
 	calculate_intsersections(ray, cy, &data);
-	if (is_closer(fvec3_sub(*data.result1, ray.orig), fvec3_sub(*data.result2,
-				ray.orig)) && fvec3_length(fvec3_sub(*data.result1,
+	if ((is_closer(fvec3_sub(*data.result1, ray.orig), fvec3_sub(*data.result2,
+					ray.orig)) && is_in_front(ray, *data.result1))
+		&& fvec3_length(fvec3_sub(*data.result1,
 				data.line1.orig)) <= cy->height / 2)
 		return (free_set_return(data.result2, data.result1, data.i, extra));
 	else if (fvec3_length(fvec3_sub(*data.result2, data.line2.orig))

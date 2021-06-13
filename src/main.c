@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 12:04:14 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 16:57:37 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	get_image(t_mlx_image *img, t_camera *cam)
 	grid.step = (tan(cam->fov / 2.)) / ((double)g_resolution.x / 2);
 	grid.i = fvec3_normalize(fvec3_product((t_fvec3){0., 1., 0.},
 				cam->orientation));
+	if (cam->orientation.x == 0 && cam->orientation.z == 0)
+		grid.i = (t_fvec3){1., 0., 0.};
 	grid.j = fvec3_normalize(fvec3_product(grid.i, cam->orientation));
 	grid.start = fvec3_add(fvec3_sub(fvec3_sub(
 					fvec3_add(cam->pos, cam->orientation),
