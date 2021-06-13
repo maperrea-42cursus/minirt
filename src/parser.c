@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 19:52:18 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 08:05:33 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 14:07:55 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	parse_r(char *line)
 	static char	done;
 
 	if (done)
-		return (0);									//TODO error message
+		return (0);
 	g_resolution.x = next_int(&line);
 	g_resolution.y = next_int(&line);
 	printf("\nresolution: %dx%d\n", g_resolution.x, g_resolution.y);
@@ -289,14 +289,14 @@ int	parse_cy(char *line)
 	return (1);
 }
 
-int	comment(char *line)
+static int	comment(char *line)
 {
 	(void)line;
 	printf("\ncomment\n");
 	return (1);
 }
 
-t_lookup_table	*get_lookup_table(void)
+static t_lookup_table	*get_lookup_table(void)
 {
 	static t_lookup_table	table[] = {
 		{"sp", &parse_sp},
@@ -314,32 +314,48 @@ t_lookup_table	*get_lookup_table(void)
 	return (table);
 }
 
-int	parse_map(char *filename)
+char	**read_file(char *filename)
 {
-	char			*line;
-	t_lookup_table	*lookup_table;
-	int				fd;
-	int				ret;
+	char	*file;
+	char	buf[513];
+	int		ret;
+	int		fd;
 
-	fd = open(filename, O_RDONLY);
 	ret = 1;
-	g_light_factor = 1;
-	while (ret == 1)
+	file = "";
+	fd = open(filename, O_RDONLY);
+	while (ret > 0)
 	{
-		ret = get_next_line(fd, &line);
+		ret = read(fd, buf, 512);
+		buf[ret] = 0;
+		file = ft_strjoin(file, buf);
+	}
+	return(ft_split(file, '\n'));
+}
+
+void	parse_map(char *filename)
+{
+	char			**file;
+	t_lookup_table	*lookup_table;
+
+	g_light_factor = 1;
+	file = read_file(filename);
+	check_map(file);
+	while (*file)
+	{
 		lookup_table = get_lookup_table();
-		while (ft_isspace(*line))
-			line++;
-		if (!*line)
+		while (ft_isspace(**file))
+			(*file)++;
+		if (!**file)
+		{
+			file++;
 			continue ;
+		}
 		while (lookup_table->key
-			&& ft_strncmp(line, lookup_table->key,
+			&& ft_strncmp(*file, lookup_table->key,
 				ft_strlen(lookup_table->key)))
 			lookup_table++;
-		if (!lookup_table->key)
-			write(1, "Error: wrong identifier\n", 6);
-		else
-			(*(lookup_table->value))(line); //TODO error management
+		(*((t_parse *)lookup_table->value))(*file); //TODO error management
+		file++;
 	}
-	return (1);
 }

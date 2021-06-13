@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 09:40:53 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 13:44:22 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@
 # include "get_next_line.h"
 
 typedef int				(t_parse)(char *line);
+typedef int				(t_checker)(char **line, void *args);
+typedef int				(t_check)(char *line, int line_nbr);
 
 typedef struct			s_lookup_table
 {
 	char				*key;
-	t_parse				*value;
+	void				*value;
 }						t_lookup_table;
 
 typedef struct			s_mlx_data
@@ -193,7 +195,9 @@ void					cast_rays(t_mlx_image *img, t_grid grid, t_camera *cam);
 void					get_image(t_mlx_image *img, t_camera *cam);
 void					init_cam(t_mlx_data *mlx);
 
-int						parse_map(char *filename);
+void					parse_map(char *filename);
+
+void					check_map(char **file);
 
 t_objects				*get_closest_obj(t_line3 ray,
 							t_fvec3 *out_intersection, void *exclude, t_extra *extra);

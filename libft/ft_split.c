@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:38:13 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 00:19:01 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 11:57:59 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@ static void	array_free(char **array)
 
 	i = 0;
 	while (array[i])
-		free_one(array[i++]);
+	{
+		free_one(array[i]);
+		array[i] = NULL;
+		i++;
+	}
 	free_one(array);
+	array = NULL;
 }
 
 static int	rec_split(char ***output, const char **str, char c, int count)
