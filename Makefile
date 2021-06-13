@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2021/06/13 17:57:47 by maperrea         ###   ########.fr        #
+#    Updated: 2021/06/13 18:14:02 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,28 @@ NAME			= miniRT
 
 SRCDIR			= src
 
-SRCS			= $(notdir $(shell find $(SRCDIR)/*.c))
+SRCS			=	main.c		\
+					raycast.c	\
+					cylinder.c	\
+					sphere.c	\
+					plane.c		\
+					parser.c	\
+					parser2.c	\
+					parser3.c	\
+					parser4.c	\
+		  			parser5.c	\
+					checker.c	\
+					checker2.c	\
+					checker3.c	\
+					checker4.c	\
+					checker5.c	\
+					vectors.c	\
+			  		vectors2.c	\
+					vectors3.c	\
+					colors.c	\
+					math.c		\
+					hooks.c		\
+					light.c		
 
 OBJDIR			= obj
 
@@ -59,12 +80,15 @@ $(OBJDIR):
 
 $(NAME):		$(MLX) $(LIBDIR)/$(LIBFT) $(OBJDIR) $(OBJS)
 				$(CC) $(DEBUG) -O3 $(CFLAGS) -I$(INCDIR) $(OBJS) $(MLX) \
-						$(LIBDIR)/$(LIBFT) $(GNLDIR)/$(GNL) -o $(NAME)
+						$(LIBDIR)/$(LIBFT) -o $(NAME)
 
 clean:
 				$(RM) -r $(OBJDIR)
 
 fclean:			clean
 				$(RM) $(NAME)
+				$(RM) $(MLX)
+				make -C libft fclean
+				make -C $(MLXDIR) clean
 
 re:				fclean $(NAME)

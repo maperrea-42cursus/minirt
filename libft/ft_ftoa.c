@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 15:21:47 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 02:47:44 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 18:06:06 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*neg_exp(char *nbr, int exponent)
 	dot_pos = ft_strchr(nbr, '.');
 	i = ft_strlen(nbr) - 2;
 	if ((nbr[i + 1] - '0') % 2)
-		nbr = ft_strjoin(nbr, ".5" + (dot_pos == -1));
+		nbr = ft_strjoin(nbr, &".5"[dot_pos == -1]);
 	nbr[i + 1] = ((nbr[i + 1] - '0') / 2) + '0';
 	while (i >= 0)
 	{
@@ -109,7 +109,7 @@ char	*ftoa(double nbr)
 			str = ft_strdup("nan");
 		else
 			str = ft_strdup("inf");
-		return (ft_strjoin("-" + (dbl.sign && !dbl.mantissa), str));
+		return (ft_strjoin(&"-"[dbl.sign && !dbl.mantissa], str));
 	}
 	i = 53;
 	while (--i && !(dbl.mantissa & 1))
@@ -122,5 +122,5 @@ char	*ftoa(double nbr)
 		str = neg_exp(str, dbl.exponent);
 	if (dbl.exponent >= 0)
 		str = ft_strjoin(str, ".");
-	return (ft_strjoin("-" + dbl.sign, str));
+	return (ft_strjoin(&"-"[(int)dbl.sign], str));
 }

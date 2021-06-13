@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:31:40 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 12:43:28 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 18:03:26 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ long long	ft_atoi(const char *str)
 	if (str[i] == '-' || str[i] == '+')
 		neg = (str[i++] == '-');
 	while (str[i] >= 48 && str[i] <= 57)
-	{
 		result = (result * 10) + (str[i++] - 48);
-		if (result > LLONG_MAX)
-			return (-1);
-	}
 	return (((neg == 1) * -result) + ((neg != 1) * result));
 }

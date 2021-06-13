@@ -6,7 +6,7 @@
 /*   By: maperrea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 13:56:28 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/12 23:41:02 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/13 18:06:33 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*ft_substr(char const *s, unsigned int start, int len)
 {
-	int		l;
 	char	*sub;
 
 	if (!s)
