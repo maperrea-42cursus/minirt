@@ -6,13 +6,13 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 17:49:08 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 17:55:04 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:57:16 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	line_checker(char *line, t_checker **checkers, void **args)
+int	line_checker(char *line, t_checker **checkers, t_args *args)
 {
 	int	i;
 
@@ -51,17 +51,18 @@ int	check_r(char *line, int line_nbr)
 {
 	static int			done = 0;
 	static t_checker	*checkers[3] = {&check_int, &check_int, NULL};
-	static void			*args[2] = {NULL, NULL};
+	static t_args		args[2] = {{1, {.irange = {1, 3200}}},
+		{1, {.irange = {1, 1800}}}};
 
 	if (done)
 	{
-		printf("Error: line %d: duplicate resolution\n", line_nbr);
+		printf("Error\nline %d: duplicate resolution\n", line_nbr);
 		exit(1);
 	}
 	line++;
 	if (!line_checker(line, checkers, args))
 	{
-		printf("Error: line %d: wrong format\n", line_nbr);
+		printf("Error\nline %d: wrong format\n", line_nbr);
 		exit(1);
 	}
 	required_params(1, 0, 0);
@@ -73,17 +74,17 @@ int	check_a(char *line, int line_nbr)
 {
 	static int			done = 0;
 	static t_checker	*checkers[3] = {&check_float, &check_color, NULL};
-	static void			*args[2] = {NULL, NULL};
+	static t_args		args[2] = {{0}, {0}};
 
 	if (done)
 	{
-		printf("Error: line %d: ambient light\n", line_nbr);
+		printf("Error\nline %d: duplicate ambient light\n", line_nbr);
 		exit(1);
 	}
 	line++;
 	if (!line_checker(line, checkers, args))
 	{
-		printf("Error: line %d: wrong format\n", line_nbr);
+		printf("Error\nline %d: wrong format\n", line_nbr);
 		exit(1);
 	}
 	required_params(0, 1, 0);
@@ -95,17 +96,17 @@ int	check_f(char *line, int line_nbr)
 {
 	static int			done = 0;
 	static t_checker	*checkers[2] = {&check_int, NULL};
-	static void			*args[1] = {NULL};
+	static t_args		args[1] = {{0}};
 
 	if (done)
 	{
-		printf("Error: line %d: duplicate light factor\n", line_nbr);
+		printf("Error\nline %d: duplicate light factor\n", line_nbr);
 		exit(1);
 	}
 	line++;
 	if (!line_checker(line, checkers, args))
 	{
-		printf("Error: line %d: wrong format\n", line_nbr);
+		printf("Error\nline %d: wrong format\n", line_nbr);
 		exit(1);
 	}
 	done = 1;

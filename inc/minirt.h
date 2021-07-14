@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:45:22 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 18:48:34 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/30 10:32:03 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include "libft.h"
 
 typedef					int (t_parse)(char *line);
-typedef					int (t_checker)(char **line, void *args);
 typedef					int (t_check)(char *line, int line_nbr);
 
 typedef struct s_lookup_table
@@ -79,6 +78,46 @@ typedef struct s_line3
 	t_fvec3				orig;
 	t_fvec3				dest;
 }						t_line3;
+
+typedef struct s_range
+{
+	int					min;
+	int					max;
+}						t_range;
+
+typedef struct s_frange
+{
+	double				min;
+	double				max;
+}						t_frange;
+
+typedef struct s_vec3_range
+{
+	t_vec3				min;
+	t_vec3				max;
+}						t_vec3_range;
+
+typedef struct s_fvec3_range
+{
+	t_fvec3				min;
+	t_fvec3				max;
+}						t_fvec3_range;
+
+typedef union u_args_data
+{
+	t_range				irange;
+	t_frange			frange;
+	t_vec3_range		vrange;
+	t_fvec3_range		fvrange;
+}						t_args_data;
+
+typedef struct s_args
+{
+	int					flag;
+	t_args_data			data;
+}						t_args;
+
+typedef					int (t_checker)(char **line, t_args args);
 
 typedef struct s_grid
 {
@@ -217,13 +256,13 @@ void					parse_map(char *filename);
 
 void					error_exit(const char *str);
 int						skip_spaces(char **str);
-int						check_int(char **str, void *range);
-int						check_float(char **str, void *data);
-int						check_vec3(char **str, void *data);
-int						check_fvec3(char **str, void *data);
-int						check_color(char **str, void *data);
+int						check_int(char **str, t_args range);
+int						check_float(char **str, t_args data);
+int						check_vec3(char **str, t_args data);
+int						check_fvec3(char **str, t_args data);
+int						check_color(char **str, t_args data);
 int						line_checker(char *line, t_checker **checkers,
-							void **args);
+							t_args *args);
 int						required_params(int res, int light, int cam);
 int						check_r(char *line, int line_nbr);
 int						check_a(char *line, int line_nbr);

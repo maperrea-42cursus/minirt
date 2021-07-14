@@ -6,7 +6,7 @@
 #    By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 22:09:05 by maperrea          #+#    #+#              #
-#    Updated: 2021/06/13 18:14:02 by maperrea         ###   ########.fr        #
+#    Updated: 2021/07/14 16:09:23 by maperrea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,8 +87,5 @@ clean:
 
 fclean:			clean
 				$(RM) $(NAME)
-				$(RM) $(MLX)
-				make -C libft fclean
-				make -C $(MLXDIR) clean
 
 re:				fclean $(NAME)

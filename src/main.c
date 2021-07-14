@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 19:46:51 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 16:57:37 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/06/30 10:30:52 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,23 @@ void	init_cam(t_mlx_data *mlx)
 	}
 }
 
+int	check_file(char *str)
+{
+	if (ft_strlen(str) < 3)
+		return (0);
+	if (ft_strncmp(&(str[ft_strlen(str) - 3]), ".rt", 3))
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_mlx_data		mlx;
 
 	if (argc < 2)
-	{
-		write(1, "Error\nNo input\n", 15);
-		return (0);
-	}
+		error_exit("Error\nNo input");
+	if (!check_file(argv[1]))
+		error_exit("Error\nIncorrect file name");
 	parse_map(argv[1]);
 	mlx.mlx_ptr = mlx_init();
 	if (!mlx.mlx_ptr)

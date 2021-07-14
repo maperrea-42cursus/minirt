@@ -6,7 +6,7 @@
 /*   By: maperrea <maperrea@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 11:33:50 by maperrea          #+#    #+#             */
-/*   Updated: 2021/06/13 17:54:43 by maperrea         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:49:26 by maperrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	check_map(char **file)
 
 	i = 0;
 	if (!file)
-		error_exit("Error: file could not be properly read");
+		error_exit("Error\nfile could not be properly read");
 	while (file[i])
 	{
 		j = 0;
@@ -69,10 +69,10 @@ void	check_map(char **file)
 			ft_strlen(lookup_table->key)))
 			lookup_table++;
 		if (!lookup_table->key)
-			error_exit("Error: unknown identifier");
+			error_exit("Error\nunknown identifier");
 		(*((t_check *)lookup_table->value))(&(file[i][j]), i + 1);
 		i++;
 	}
 	if (!required_params(0, 0, 0))
-		error_exit("Error: missing parameter");
+		error_exit("Error\nmissing parameter");
 }
